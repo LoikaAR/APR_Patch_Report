@@ -79,17 +79,44 @@ public class LinkedList {
     }
 
     /**
-     * sort LL
-     * @param l the list for sorting
-     * @return sorted list
+     * Swap ptr1 and ptr2
+     * @param ptr1 pointer to node 1
+     * @param ptr2 pointer to node 2
      */
-    public LinkedList sort(LinkedList l) {
-        return l;
+    public static void swap(Node ptr1, Node ptr2) {
+        int tmp = ptr2.data;
+        ptr2.data = ptr1.data;
+        ptr1.data = tmp;
+    }
+
+    /**
+     *  sort the LL
+     * @param head the head of LL
+     */
+    public static void bubbleSort(Node head) {
+        boolean swapped;
+        Node current;
+
+        if (head == null)
+            return;
+
+        do {
+            swapped = false;
+            current = head;
+
+            while (current.next != null) {
+                if (current.data > current.next.data) {
+                    swap(current, current.next);
+                    swapped = true;
+                }
+                current = current.next;
+            }
+        } while (swapped);
     }
 
     /**
      * print the whole list
-     * @param list
+     * @param list the list
      */
     public void printList(LinkedList list) {
         Node current = list.head;
@@ -100,3 +127,9 @@ public class LinkedList {
         }
     }
 }
+
+// write binary search, make an error
+// write two test cases, pass and fail
+// get state of the program before patch: CFG, vars, valuables - using dynamic analysis framework
+// make patch - manually
+// get state of the program after the patch

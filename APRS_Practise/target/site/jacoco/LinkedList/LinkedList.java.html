@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinkedList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">APRS_Practise</a> &gt; <a href="index.source.html" class="el_package">LinkedList</a> &gt; <span class="el_source">LinkedList.java</span></div><h1>LinkedList.java</h1><pre class="source lang-java linenums">package LinkedList;
+
+<span class="nc" id="L3">public class LinkedList {</span>
+
+    Node head;
+
+    static class Node {
+        Node next;
+        Node prev;
+        int data;
+
+<span class="nc" id="L12">        Node(int d) {</span>
+<span class="nc" id="L13">            this.next = null;</span>
+<span class="nc" id="L14">            this.prev = null;</span>
+<span class="nc" id="L15">            this.data = d;</span>
+<span class="nc" id="L16">        }</span>
+
+        public void setData(int d) {
+<span class="nc" id="L19">            this.data = d;</span>
+<span class="nc" id="L20">        }</span>
+    }
+
+    public static LinkedList insert(LinkedList l, int data) {
+<span class="nc" id="L24">        Node in = new Node(data);</span>
+
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (l.head == null) {</span>
+<span class="nc" id="L27">            l.head = in;</span>
+        } else {
+<span class="nc" id="L29">            Node last = l.head;</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">            while (last.next != null) {</span>
+<span class="nc" id="L31">                last = last.next;</span>
+            }
+<span class="nc" id="L33">            last.next = in;</span>
+<span class="nc" id="L34">            in.prev = last;</span>
+        }
+<span class="nc" id="L36">        return l;</span>
+    }
+
+    /**
+     * return index of target in the linked list
+     *
+     * @param target the target
+     * @param l the list
+     * @return index of target
+     */
+    public int getIndex(LinkedList l, int target) {
+<span class="nc" id="L47">        Node hold = l.head;</span>
+<span class="nc" id="L48">        int idx = 0;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        while (hold != null) {</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (hold.data == target) {</span>
+<span class="nc" id="L51">                break;</span>
+            } else {
+<span class="nc" id="L53">                idx++;</span>
+<span class="nc" id="L54">                hold = hold.next;</span>
+            }
+        }
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (hold == null) {</span>
+<span class="nc" id="L58">            return -1;</span>
+        }
+<span class="nc" id="L60">        return idx;</span>
+    }
+
+    /**
+     * return how many times target appears in list l
+     * @param l the list
+     * @param target the target int
+     * @return count
+     */
+    public int getCount(LinkedList l, int target) {
+<span class="nc" id="L70">        Node n = l.head;</span>
+<span class="nc" id="L71">        int count = 0;</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        while (n != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (n.data == target) {</span>
+<span class="nc" id="L74">                count++;</span>
+            }
+<span class="nc" id="L76">            n = n.next;</span>
+        }
+<span class="nc" id="L78">        return count;</span>
+    }
+
+    /**
+     * Swap ptr1 and ptr2
+     * @param ptr1 pointer to node 1
+     * @param ptr2 pointer to node 2
+     */
+    public static void swap(Node ptr1, Node ptr2) {
+<span class="nc" id="L87">        int tmp = ptr2.data;</span>
+<span class="nc" id="L88">        ptr2.data = ptr1.data;</span>
+<span class="nc" id="L89">        ptr1.data = tmp;</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     *  sort the LL
+     * @param head the head of LL
+     */
+    public static void bubbleSort(Node head) {
+        boolean swapped;
+        Node current;
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (head == null)</span>
+<span class="nc" id="L101">            return;</span>
+
+        do {
+<span class="nc" id="L104">            swapped = false;</span>
+<span class="nc" id="L105">            current = head;</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            while (current.next != null) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (current.data &gt; current.next.data) {</span>
+<span class="nc" id="L109">                    swap(current, current.next);</span>
+<span class="nc" id="L110">                    swapped = true;</span>
+                }
+<span class="nc" id="L112">                current = current.next;</span>
+            }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        } while (swapped);</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * print the whole list
+     * @param list
+     */
+    public void printList(LinkedList list) {
+<span class="nc" id="L122">        Node current = list.head;</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        while (current != null) {</span>
+<span class="nc" id="L125">            System.out.println(current.data);</span>
+<span class="nc" id="L126">            current = current.next;</span>
+        }
+<span class="nc" id="L128">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
