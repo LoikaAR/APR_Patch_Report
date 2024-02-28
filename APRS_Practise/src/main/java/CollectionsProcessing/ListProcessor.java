@@ -21,6 +21,7 @@ public class ListProcessor {
      * @return the index of target if it exists, -1 otherwise
      */
     public static Integer binarySearch(ArrayList<Integer> input, Integer target, int l, int r) {
+
         if (r >= l) {
             int midIdx = l + (r-l)/2;
             Integer midElem = input.get(midIdx);
@@ -34,7 +35,7 @@ public class ListProcessor {
                 return binarySearch(input, target,midIdx+1,r);
             }
         }
-
         return -1;
     }
+
 }

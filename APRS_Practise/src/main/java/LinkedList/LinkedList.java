@@ -128,8 +128,8 @@ public class LinkedList {
     }
 }
 
-// write binary search, make an error
-// write two test cases, pass and fail
-// get state of the program before patch: CFG, vars, valuables - using dynamic analysis framework
-// make patch - manually
-// get state of the program after the patch
+// 1) write binary search, make an error
+// 2) write two test cases, pass and fail
+// 3) get state of the program before patch: CFG, vars, valuables - using dynamic analysis framework - JaCoCo, opentelemetery
+// 4) make patch - manually
+// 5) get state of the program after the patch

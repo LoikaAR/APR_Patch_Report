@@ -18,10 +18,18 @@ public class CollectionsProcessingTest {
     }
 
     @Test
+    public void testNotFound() {
+        for (int i = 0; i < 10; i++) {
+            input.add(i);
+        }
+        assertEquals(-1, ListProcessor.binarySearch(input, 12, 0, input.size()-1));
+    }
+
+    @Test
     public void testBinSearchFail() {
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
-        assertEquals(3, ListProcessor.binarySearch(input, 3, 0, input.size()-1));
+        assertEquals(4, ListProcessor.binarySearch(input, 3, 0, input.size()-1));
     }
 }
