@@ -2,9 +2,6 @@ package CollectionsProcessing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
-import static java.lang.Math.floor;
 
 public class ListProcessor {
     ArrayList<Integer> list = new ArrayList<Integer>();
@@ -38,4 +35,7 @@ public class ListProcessor {
         return -1;
     }
 
+    public void newMethod() {
+        System.out.println("method called");
+    }
 }

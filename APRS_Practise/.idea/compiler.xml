@@ -9,5 +9,16 @@
         <module name="APRS_Practise" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="APRS_Practise.main" target="11" />
+      <module name="APRS_Practise.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="APRS_Practise" options="" />
+      <module name="APRS_Practise.main" options="-Xlint:deprecation,unchecked -Xpkginfo:always" />
+      <module name="APRS_Practise.test" options="-Xlint:deprecation,unchecked -Xpkginfo:always" />
+    </option>
   </component>
 </project>
