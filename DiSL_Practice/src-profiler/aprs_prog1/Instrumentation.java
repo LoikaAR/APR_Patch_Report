@@ -33,5 +33,4 @@ public class Instrumentation {
                 dc.getMethodArgumentValue(1, int.class),
                 dc.getStackValue(0, int.class));
     }
-
 }
