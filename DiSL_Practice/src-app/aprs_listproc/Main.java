@@ -9,20 +9,20 @@ public class Main {
     }
 
     public Integer binarySearch(int input[], int target) {
-        int l = 0;                          // 1
-        int r = input.length-1;             // 2
+        int l = 0;                          // 0
+        int r = input.length-1;             // 0
 
-        while (l <= r) {                    // 3
-            int mid = l + (r-l) / 2;        // 4
+        while (l <= r) {                    // 1
+            int mid = l + (r-l) / 2;        // 1
 
-            if (input[mid] == target) {     // 5
-                return mid;
+            if (input[mid] == target) {     // 2
+                return mid;                 // 3
             }
 
-            if (input[mid] < target) {      // 6
-                l = mid + 1;
-            } else {                        // 7
-                r = mid - 1;
+            if (input[mid] < target) {      // 4
+                l = mid + 1;                // 5
+            } else {                        // 6
+                r = mid - 1;                // 7
             }
         }
         return -1;                          // 8
@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) {
         int in[] = {0,1,2,3,4,5};
-        int target = 1;
+        int target = 3;
         Main m = new Main();
         m.binarySearch(in, target);
     }
