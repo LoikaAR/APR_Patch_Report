@@ -38,4 +38,8 @@ public class ListProcessor {
     public void newMethod() {
         System.out.println("method called");
     }
+
+    public static void main(String[] args) {
+        System.out.println("main called");
+    }
 }

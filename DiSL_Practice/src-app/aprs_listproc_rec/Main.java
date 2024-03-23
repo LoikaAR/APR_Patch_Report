@@ -27,11 +27,9 @@ public class Main {
 
     public static void main(String[] args) {
         ArrayList<Integer> in = new ArrayList<Integer>();
-        in.add(0);
-        in.add(1);
-        in.add(2);
-        in.add(3);
-        in.add(4);
+        for (Integer i = 0; i < 50; i++) {
+            in.add(i);
+        }
         binarySearch(in, 3, 0, in.size()-1);
     }
 }

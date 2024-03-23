@@ -28,10 +28,12 @@ public class Instrumentation {
 
     @AfterReturning(marker = BodyMarker.class, scope = "aprs_listproc_rec.Main.binarySearch")
     static void afterSumMethod(DynamicContext dc) {
-        System.out.format("Arguments of binarySearch(): \n target: %d\n left: %d\n right: %d Result of binarySearch():\n %d\n",
+        System.out.format("Arguments of binarySearch(): \n target: %d\n left: %d\n right: %d \nResult of binarySearch():\n %d\n",
                 dc.getMethodArgumentValue(1, Integer.class),
                 dc.getMethodArgumentValue(2, int.class),
                 dc.getMethodArgumentValue(3, int.class),
                 dc.getStackValue(0, Integer.class));
+
+//        System.out.println("getThis():"+dc.getThis().toString());
     }
 }
