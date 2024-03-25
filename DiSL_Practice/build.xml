@@ -1,4 +1,5 @@
 <project name="AJPDislTutorial" default="build" basedir=".">
+	<property name = "testdir" location = "test" />
 
 	<path id="profiler.classpath">
 		<fileset dir="lib" includes="*.jar" />

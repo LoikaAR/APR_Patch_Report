@@ -10,7 +10,6 @@ import ch.usi.dag.disl.dynamiccontext.DynamicContext;
 import ch.usi.dag.disl.marker.BodyMarker;
 import ch.usi.dag.disl.marker.BasicBlockMarker;
 import ch.usi.dag.disl.staticcontext.MethodStaticContext;
-import ch.usi.dag.disl.staticcontext.AbstractStaticContext;
 import ch.usi.dag.disl.staticcontext.BasicBlockStaticContext;
 import ch.usi.dag.disl.staticcontext.InstructionStaticContext;
 public class Instrumentation {
@@ -30,7 +29,7 @@ public class Instrumentation {
         BasicBlocks.put(1, "ENTER while (l <= r); ASSIGN mid = l+(r-l)/2;");
         BasicBlocks.put(2, "CHECK if (input[mid] == target)");
         BasicBlocks.put(3, "input[mid] == target -> True => return mid");
-        BasicBlocks.put(4, "input[mid] == target -> False=> CHECK if (input[mid] < target)");
+        BasicBlocks.put(4, "input[mid] == target -> False => CHECK if (input[mid] < target)");
         BasicBlocks.put(5, "input[mid] == target -> False, input[mid] < target -> True => ASSIGN l = mid+1");
         BasicBlocks.put(6, "input[mid] == target -> False, input[mid] < target -> False => else");
         BasicBlocks.put(7, "ASSIGN r = mid-1");
