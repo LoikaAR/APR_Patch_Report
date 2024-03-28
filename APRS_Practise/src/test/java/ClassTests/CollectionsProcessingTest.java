@@ -7,10 +7,9 @@ import CollectionsProcessing.ListProcessor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CollectionsProcessingTest {
-    ArrayList<Integer> input = new ArrayList<Integer>();
-
     @Test
     public void testBinSearchPass() {
+        ArrayList<Integer> input = new ArrayList<Integer>();
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
@@ -19,6 +18,7 @@ public class CollectionsProcessingTest {
 
     @Test
     public void testNotFound() {
+        ArrayList<Integer> input = new ArrayList<Integer>();
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
@@ -27,6 +27,7 @@ public class CollectionsProcessingTest {
 
     @Test
     public void testBinSearchFail() {
+        ArrayList<Integer> input = new ArrayList<Integer>();
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }

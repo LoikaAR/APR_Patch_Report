@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SootClass.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">APRS_Practise</a> &gt; <a href="index.source.html" class="el_package">Soots</a> &gt; <span class="el_source">SootClass.java</span></div><h1>SootClass.java</h1><pre class="source lang-java linenums">package Soots;
 
-import com.fasterxml.jackson.databind.util.ISO8601Utils;
-import org.eclipse.jdt.core.dom.NullLiteral;
 import sootup.core.inputlocation.AnalysisInputLocation;
 import sootup.core.model.Method;
 import sootup.core.model.SootMethod;
+import sootup.core.signatures.MethodSignature;
 import sootup.java.bytecode.inputlocation.JavaClassPathAnalysisInputLocation;
 import sootup.java.core.JavaSootClass;
+import sootup.java.core.JavaSootMethod;
 import sootup.java.core.types.JavaClassType;
 import sootup.java.core.views.JavaView;
 import sootup.java.sourcecode.inputlocation.JavaSourcePathAnalysisInputLocation;
-import spoon.compiler.builder.Options;
 
+import java.util.Collections;
 import java.util.Optional;
 
 <span class="nc" id="L17">public class SootClass {</span>
 
     public static void main(String[] args) {
 
-
-<span class="nc" id="L22">        AnalysisInputLocation inputLocation =</span>
+<span class="nc" id="L21">        AnalysisInputLocation inputLocation =</span>
                 new JavaClassPathAnalysisInputLocation(&quot;target/classes/CollectionsProcessing&quot;);
 
-<span class="nc" id="L25">        JavaView view = new JavaView(inputLocation);</span>
+<span class="nc" id="L24">        JavaView view = new JavaView(inputLocation);</span>
 
 
     //  This retrieves the classType of the ListProcessor class
-<span class="nc" id="L29">        JavaClassType classType =</span>
-<span class="nc" id="L30">                view.getIdentifierFactory().getClassType(&quot;CollectionsProcessing.ListProcessor&quot;);</span>
+<span class="nc" id="L28">        JavaClassType classType =</span>
+<span class="nc" id="L29">                view.getIdentifierFactory().getClassType(&quot;CollectionsProcessing.ListProcessor&quot;);</span>
 
-<span class="nc" id="L32">        Optional&lt;JavaSootClass&gt; sootClassOptional = view.getClass(classType);</span>
+        // classType is empty and contains no info about ListProcessor class
 
-<span class="nc" id="L34">        JavaSootClass sootClass = view.getClass(classType).get();</span>
-<span class="nc" id="L35">        System.out.println(sootClass);</span>
-<span class="nc" id="L36">    }</span>
+<span class="nc" id="L33">        MethodSignature methodSignature = view.getIdentifierFactory()</span>
+<span class="nc" id="L34">                .getMethodSignature(</span>
+                classType,
+                &quot;binarySearch&quot;,
+                &quot;Integer&quot;,
+<span class="nc" id="L38">                Collections.singletonList(&quot;java.lang.String[]&quot;));</span>
+
+<span class="nc" id="L40">        Optional&lt;JavaSootMethod&gt; opt = view.getMethod(methodSignature);</span>
+
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L43">            SootMethod method = opt.get();</span>
+<span class="nc" id="L44">            System.out.println(method.getBody().getStmts());</span>
+<span class="nc" id="L45">        } else {</span>
+<span class="nc" id="L46">            System.out.println(&quot;No methods found&quot;);</span>
+        }
+<span class="nc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
