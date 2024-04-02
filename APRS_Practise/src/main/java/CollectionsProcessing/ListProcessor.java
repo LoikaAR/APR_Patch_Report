@@ -41,5 +41,10 @@ public class ListProcessor {
 
     public static void main(String[] args) {
         System.out.println("main called");
+        ArrayList<Integer> input = new ArrayList<Integer>();
+        for (int i = 0; i < 10; i++) {
+            input.add(i);
+        }
+        System.out.println(binarySearch(input, 5, 0, input.size()-1));
     }
 }

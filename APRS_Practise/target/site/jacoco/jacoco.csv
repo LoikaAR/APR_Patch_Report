@@ -1,6 +1,2 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-APRS_Practise,Spoons,SpoonClass,70,0,4,0,16,0,4,0,2,0
-APRS_Practise,Soots,SootClass,48,0,2,0,15,0,3,0,2,0
-APRS_Practise,CollectionsProcessing,ListProcessor,22,49,0,6,9,9,3,4,3,1
-APRS_Practise,LinkedList,LinkedList.Node,16,0,0,0,7,0,2,0,2,0
-APRS_Practise,LinkedList,LinkedList,128,0,24,0,47,0,19,0,7,0
+APRS_Practise,CollectionsProcessing,ListProcessor,49,49,2,6,13,9,4,4,3,1

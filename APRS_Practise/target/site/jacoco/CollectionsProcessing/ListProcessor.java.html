@@ -41,6 +41,11 @@ public class ListProcessor {
 
     public static void main(String[] args) {
 <span class="nc" id="L43">        System.out.println(&quot;main called&quot;);</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L44">        ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L46">            input.add(i);</span>
+        }
+<span class="nc" id="L48">        System.out.println(binarySearch(input, 5, 0, input.size()-1));</span>
+<span class="nc" id="L49">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
