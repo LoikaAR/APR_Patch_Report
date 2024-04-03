@@ -40,8 +40,9 @@ public class ListProcessor {
     }
 
     public static void main(String[] args) {
-        System.out.println("main called");
         ArrayList<Integer> input = new ArrayList<Integer>();
+        new ListProcessor(input).newMethod();
+        System.out.println("main called");
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
