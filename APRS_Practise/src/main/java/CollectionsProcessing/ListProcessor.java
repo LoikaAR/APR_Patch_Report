@@ -1,9 +1,13 @@
 package CollectionsProcessing;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ListProcessor {
+//    final Logger logger = LoggerFactory.getLogger(ListProcessor.class);
+
     ArrayList<Integer> list = new ArrayList<Integer>();
 
     public ListProcessor(ArrayList<Integer> in) {
@@ -18,7 +22,6 @@ public class ListProcessor {
      * @return the index of target if it exists, -1 otherwise
      */
     public static Integer binarySearch(ArrayList<Integer> input, Integer target, int l, int r) {
-
         if (r >= l) {
             int midIdx = l + (r-l)/2;
             Integer midElem = input.get(midIdx);
@@ -35,13 +38,15 @@ public class ListProcessor {
         return -1;
     }
 
-    public void newMethod() {
-        System.out.println("method called");
+    public void newMethod(int i) {
+        System.out.println("the newMethod called");
+        int j = i + 10;
+//        logger.debug("Values: i = {}, j = {}", i, j);
     }
 
     public static void main(String[] args) {
         ArrayList<Integer> input = new ArrayList<Integer>();
-        new ListProcessor(input).newMethod();
+        new ListProcessor(input).newMethod(5);
         int j = 3;
         j = j + 1;
         System.out.println(j);
