@@ -1,18 +1,25 @@
 package CollectionsProcessing;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.api.trace.Tracer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ListProcessor {
-//    final Logger logger = LoggerFactory.getLogger(ListProcessor.class);
+    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();
+    private final Tracer tracer;
+
 
     ArrayList<Integer> list = new ArrayList<Integer>();
 
-    public ListProcessor(ArrayList<Integer> in) {
+    public ListProcessor(ArrayList<Integer> in, OpenTelemetry openTelemetry) {
         this.list = in;
         Collections.sort(this.list);
+        this.tracer = openTelemetry.getTracer(ListProcessor.class.getName());
     }
 
     /**
@@ -41,19 +48,23 @@ public class ListProcessor {
     public void newMethod(int i) {
         System.out.println("the newMethod called");
         int j = i + 10;
-//        logger.debug("Values: i = {}, j = {}", i, j);
     }
 
     public static void main(String[] args) {
         ArrayList<Integer> input = new ArrayList<Integer>();
-        new ListProcessor(input).newMethod(5);
-        int j = 3;
-        j = j + 1;
-        System.out.println(j);
-        System.out.println("main called");
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
+
+        ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
+        lp.newMethod(5);
+        System.out.println(lp.tracer);
+
+        Span span = lp.tracer.spanBuilder("binarySearch").startSpan();
+        span.getSpanContext();
+        System.out.println(span);
+
+        System.out.println("main called");
         System.out.println(binarySearch(input, 5, 0, input.size()-1));
     }
 }

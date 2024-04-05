@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OtelServerHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">APRS_Practise</a> &gt; <a href="index.source.html" class="el_package">OtelServerHandling</a> &gt; <span class="el_source">OtelServerHandler.java</span></div><h1>OtelServerHandler.java</h1><pre class="source lang-java linenums">package OtelServerHandling;
+
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import CollectionsProcessing.ListProcessor;
+import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.context.Scope;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
+
+import java.util.ArrayList;
+
+import static CollectionsProcessing.ListProcessor.binarySearch;
+import static spark.Spark.*;
+
+public class OtelServerHandler {
+<span class="nc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(ListProcessor.class);</span>
+<span class="nc" id="L20">    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();</span>
+    private static Tracer tracer;
+
+<span class="nc" id="L23">    public OtelServerHandler(OpenTelemetry openTelemetry) {</span>
+<span class="nc" id="L24">        tracer = openTelemetry.getTracer(OtelServerHandler.class.getName());</span>
+<span class="nc" id="L25">    }</span>
+
+    public static void main(String[] args) {
+
+
+<span class="nc" id="L30">        port(4318);</span>
+
+<span class="nc" id="L32">        post(&quot;/v1/traces&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L33">            String body = request.body();</span>
+<span class="nc" id="L34">            System.out.println(&quot;Received traces: &quot; + body);</span>
+<span class="nc" id="L35">            return &quot;Traces received&quot;;</span>
+        });
+
+<span class="nc" id="L38">        post(&quot;/v1/metrics&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L39">            String body = request.body();</span>
+<span class="nc" id="L40">            System.out.println(&quot;Received metrics: &quot; + body);</span>
+<span class="nc" id="L41">            return &quot;Metrics received&quot;;</span>
+        });
+
+<span class="nc" id="L44">        post(&quot;/v1/logs&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L45">            String body = request.body();</span>
+<span class="nc" id="L46">            System.out.println(&quot;Received logs: &quot; + body);</span>
+<span class="nc" id="L47">            return &quot;Logs received&quot;;</span>
+        });
+
+<span class="nc" id="L50">        get(&quot;/emit&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L51">            Span span = tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();</span>
+
+<span class="nc" id="L53">            ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L55">                input.add(i);</span>
+            }
+<span class="nc" id="L57">            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());</span>
+<span class="nc" id="L58">            Integer target = 4;</span>
+<span class="nc" id="L59">            int left = 0;</span>
+<span class="nc" id="L60">            int right = input.size()-1;</span>
+<span class="nc" id="L61">            Integer result = binarySearch(input, target, left, right);</span>
+
+
+<span class="nc" id="L64">            try (Scope scope = span.makeCurrent()) {</span>
+<span class="nc" id="L65">                System.out.println(&quot;bin search&quot;);</span>
+<span class="nc" id="L66">            } catch(Throwable t) {</span>
+<span class="nc" id="L67">                span.recordException(t);</span>
+<span class="nc" id="L68">                throw t;</span>
+            } finally {
+<span class="nc" id="L70">                span.end();</span>
+            }
+
+<span class="nc" id="L73">            return &quot;Spans emitted&quot;;</span>
+        });
+<span class="nc" id="L75">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
