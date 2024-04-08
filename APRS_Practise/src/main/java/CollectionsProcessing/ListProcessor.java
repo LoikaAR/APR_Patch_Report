@@ -9,6 +9,8 @@ import io.opentelemetry.api.trace.Tracer;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static spark.Spark.*;
+
 public class ListProcessor {
     TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();
     private final Tracer tracer;
@@ -51,20 +53,38 @@ public class ListProcessor {
     }
 
     public static void main(String[] args) {
+//        port(3000);
+
+
         ArrayList<Integer> input = new ArrayList<Integer>();
         for (int i = 0; i < 10; i++) {
             input.add(i);
         }
 
-        ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
-        lp.newMethod(5);
-        System.out.println(lp.tracer);
+//        get("/test", (request, response) -> {
+//            System.out.println(binarySearch(input, 5, 0, input.size()-1));
+//            return "Traces received";
+//        });
 
-        Span span = lp.tracer.spanBuilder("binarySearch").startSpan();
-        span.getSpanContext();
-        System.out.println(span);
+        String big_bad_string = "HELLO THERE PLEASE NOTICE ME";
+
+        int h = 3;
+        int w = 4;
+
+        int p = h+w;
+
+        System.out.println(h + w + p);
+//
+//        ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
+//        lp.newMethod(5);
+//        System.out.println(lp.tracer);
+//
+//        Span span = lp.tracer.spanBuilder("binarySearch").startSpan();
+//        span.getSpanContext();
+//        System.out.println(span);
 
         System.out.println("main called");
         System.out.println(binarySearch(input, 5, 0, input.size()-1));
     }
 }
+

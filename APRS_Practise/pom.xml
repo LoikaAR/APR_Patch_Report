@@ -75,6 +75,11 @@
             <version>2.0.12</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+            <version>1.36.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

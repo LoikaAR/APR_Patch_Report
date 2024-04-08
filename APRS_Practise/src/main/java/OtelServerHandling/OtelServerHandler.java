@@ -9,6 +9,7 @@ import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,10 @@ public class OtelServerHandler {
 
     OtelServerHandler(OpenTelemetry openTelemetry) {
         tracer = openTelemetry.getTracer(OtelServerHandler.class.getName());
+    }
+
+    public OpenTelemetry openTelemetry() {
+        return AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
     }
 
     public static void main(String[] args) {

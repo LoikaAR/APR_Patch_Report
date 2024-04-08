@@ -9,6 +9,7 @@ import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
 import java.util.ArrayList;
 
@@ -16,63 +17,67 @@ import static CollectionsProcessing.ListProcessor.binarySearch;
 import static spark.Spark.*;
 
 public class OtelServerHandler {
-<span class="nc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(ListProcessor.class);</span>
-<span class="nc" id="L20">    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();</span>
+<span class="nc" id="L20">    private static final Logger logger = LoggerFactory.getLogger(ListProcessor.class);</span>
+<span class="nc" id="L21">    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();</span>
     private static Tracer tracer;
 
-<span class="nc" id="L23">    public OtelServerHandler(OpenTelemetry openTelemetry) {</span>
-<span class="nc" id="L24">        tracer = openTelemetry.getTracer(OtelServerHandler.class.getName());</span>
-<span class="nc" id="L25">    }</span>
+<span class="nc" id="L24">    OtelServerHandler(OpenTelemetry openTelemetry) {</span>
+<span class="nc" id="L25">        tracer = openTelemetry.getTracer(OtelServerHandler.class.getName());</span>
+<span class="nc" id="L26">    }</span>
+
+    public OpenTelemetry openTelemetry() {
+<span class="nc" id="L29">        return AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();</span>
+    }
 
     public static void main(String[] args) {
 
 
-<span class="nc" id="L30">        port(4318);</span>
+<span class="nc" id="L35">        port(4318);</span>
 
-<span class="nc" id="L32">        post(&quot;/v1/traces&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L33">            String body = request.body();</span>
-<span class="nc" id="L34">            System.out.println(&quot;Received traces: &quot; + body);</span>
-<span class="nc" id="L35">            return &quot;Traces received&quot;;</span>
+<span class="nc" id="L37">        post(&quot;/v1/traces&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L38">            String body = request.body();</span>
+<span class="nc" id="L39">            System.out.println(&quot;Received traces: &quot; + body);</span>
+<span class="nc" id="L40">            return &quot;Traces received&quot;;</span>
         });
 
-<span class="nc" id="L38">        post(&quot;/v1/metrics&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L39">            String body = request.body();</span>
-<span class="nc" id="L40">            System.out.println(&quot;Received metrics: &quot; + body);</span>
-<span class="nc" id="L41">            return &quot;Metrics received&quot;;</span>
+<span class="nc" id="L43">        get(&quot;/v1/metrics&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L44">            String body = request.body();</span>
+<span class="nc" id="L45">            System.out.println(&quot;Received metrics: &quot; + body);</span>
+<span class="nc" id="L46">            return &quot;Metrics received&quot;;</span>
         });
 
-<span class="nc" id="L44">        post(&quot;/v1/logs&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L45">            String body = request.body();</span>
-<span class="nc" id="L46">            System.out.println(&quot;Received logs: &quot; + body);</span>
-<span class="nc" id="L47">            return &quot;Logs received&quot;;</span>
+<span class="nc" id="L49">        post(&quot;/v1/logs&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L50">            String body = request.body();</span>
+<span class="nc" id="L51">            System.out.println(&quot;Received logs: &quot; + body);</span>
+<span class="nc" id="L52">            return &quot;Logs received&quot;;</span>
         });
 
-<span class="nc" id="L50">        get(&quot;/emit&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L51">            Span span = tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();</span>
+<span class="nc" id="L55">        get(&quot;/emit&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L56">            Span span = tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();</span>
 
-<span class="nc" id="L53">            ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
-<span class="nc" id="L55">                input.add(i);</span>
+<span class="nc" id="L58">            ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L60">                input.add(i);</span>
             }
-<span class="nc" id="L57">            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());</span>
-<span class="nc" id="L58">            Integer target = 4;</span>
-<span class="nc" id="L59">            int left = 0;</span>
-<span class="nc" id="L60">            int right = input.size()-1;</span>
-<span class="nc" id="L61">            Integer result = binarySearch(input, target, left, right);</span>
+<span class="nc" id="L62">            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());</span>
+<span class="nc" id="L63">            Integer target = 4;</span>
+<span class="nc" id="L64">            int left = 0;</span>
+<span class="nc" id="L65">            int right = input.size()-1;</span>
+<span class="nc" id="L66">            Integer result = binarySearch(input, target, left, right);</span>
 
 
-<span class="nc" id="L64">            try (Scope scope = span.makeCurrent()) {</span>
-<span class="nc" id="L65">                System.out.println(&quot;bin search&quot;);</span>
-<span class="nc" id="L66">            } catch(Throwable t) {</span>
-<span class="nc" id="L67">                span.recordException(t);</span>
-<span class="nc" id="L68">                throw t;</span>
+<span class="nc" id="L69">            try (Scope scope = span.makeCurrent()) {</span>
+<span class="nc" id="L70">                System.out.println(&quot;bin search&quot;);</span>
+<span class="nc" id="L71">            } catch(Throwable t) {</span>
+<span class="nc" id="L72">                span.recordException(t);</span>
+<span class="nc" id="L73">                throw t;</span>
             } finally {
-<span class="nc" id="L70">                span.end();</span>
+<span class="nc" id="L75">                span.end();</span>
             }
 
-<span class="nc" id="L73">            return &quot;Spans emitted&quot;;</span>
+<span class="nc" id="L78">            return &quot;Spans emitted&quot;;</span>
         });
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L80">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
