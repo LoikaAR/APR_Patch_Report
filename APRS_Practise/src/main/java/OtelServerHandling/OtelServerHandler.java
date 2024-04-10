@@ -31,7 +31,6 @@ public class OtelServerHandler {
 
     public static void main(String[] args) {
 
-
         port(4318);
 
         post("/v1/traces", (request, response) -> {
