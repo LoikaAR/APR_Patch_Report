@@ -52,6 +52,11 @@ public class OtelServerHandler {
         });
 
         get("/emit", (request, response) -> {
+
+            System.out.println("test emit");
+
+            System.out.println(tracer);
+
             Span span = tracer.spanBuilder("binarySearch").startSpan();
 
             ArrayList<Integer> input = new ArrayList<Integer>();

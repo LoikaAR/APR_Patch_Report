@@ -1,0 +1,43 @@
+RULE trace main entry
+
+CLASS ListProcessor
+
+METHOD main
+
+AT ENTRY
+IF true
+
+DO traceln("entering main");
+
+ENDRULE
+
+ 
+
+RULE trace main exit
+
+CLASS ListProcessor
+
+METHOD main
+
+AT EXIT
+
+IF true
+
+DO traceln("exiting main")
+
+ENDRULE
+
+
+
+RULE trace variables
+
+CLASS ListProcessor
+
+METHOD main
+
+AT ENTRY
+IF true
+
+DO traceln("Variable:" + $1);
+
+ENDRULE

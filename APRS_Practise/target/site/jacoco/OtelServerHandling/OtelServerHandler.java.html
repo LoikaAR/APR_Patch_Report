@@ -31,53 +31,57 @@ public class OtelServerHandler {
 
     public static void main(String[] args) {
 
+<span class="nc" id="L34">        port(4318);</span>
 
-<span class="nc" id="L35">        port(4318);</span>
-
-<span class="nc" id="L37">        post(&quot;/v1/traces&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L38">            String body = request.body();</span>
-<span class="nc" id="L39">            System.out.println(&quot;Received traces: &quot; + body);</span>
-<span class="nc" id="L40">            return &quot;Traces received&quot;;</span>
+<span class="nc" id="L36">        post(&quot;/v1/traces&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L37">            String body = request.body();</span>
+<span class="nc" id="L38">            System.out.println(&quot;Received traces: &quot; + body);</span>
+<span class="nc" id="L39">            return &quot;Traces received&quot;;</span>
         });
 
-<span class="nc" id="L43">        get(&quot;/v1/metrics&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L44">            String body = request.body();</span>
-<span class="nc" id="L45">            System.out.println(&quot;Received metrics: &quot; + body);</span>
-<span class="nc" id="L46">            return &quot;Metrics received&quot;;</span>
+<span class="nc" id="L42">        post(&quot;/v1/metrics&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L43">            String body = request.body();</span>
+<span class="nc" id="L44">            System.out.println(&quot;Received metrics: &quot; + body);</span>
+<span class="nc" id="L45">            return &quot;Metrics received&quot;;</span>
         });
 
-<span class="nc" id="L49">        post(&quot;/v1/logs&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L50">            String body = request.body();</span>
-<span class="nc" id="L51">            System.out.println(&quot;Received logs: &quot; + body);</span>
-<span class="nc" id="L52">            return &quot;Logs received&quot;;</span>
+<span class="nc" id="L48">        post(&quot;/v1/logs&quot;, (request, response) -&gt; {</span>
+<span class="nc" id="L49">            String body = request.body();</span>
+<span class="nc" id="L50">            System.out.println(&quot;Received logs: &quot; + body);</span>
+<span class="nc" id="L51">            return &quot;Logs received&quot;;</span>
         });
 
-<span class="nc" id="L55">        get(&quot;/emit&quot;, (request, response) -&gt; {</span>
-<span class="nc" id="L56">            Span span = tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();</span>
+<span class="nc" id="L54">        get(&quot;/emit&quot;, (request, response) -&gt; {</span>
 
-<span class="nc" id="L58">            ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
-<span class="nc" id="L60">                input.add(i);</span>
+<span class="nc" id="L56">            System.out.println(&quot;test emit&quot;);</span>
+
+<span class="nc" id="L58">            System.out.println(tracer);</span>
+
+<span class="nc" id="L60">            Span span = tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();</span>
+
+<span class="nc" id="L62">            ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L64">                input.add(i);</span>
             }
-<span class="nc" id="L62">            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());</span>
-<span class="nc" id="L63">            Integer target = 4;</span>
-<span class="nc" id="L64">            int left = 0;</span>
-<span class="nc" id="L65">            int right = input.size()-1;</span>
-<span class="nc" id="L66">            Integer result = binarySearch(input, target, left, right);</span>
+<span class="nc" id="L66">            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());</span>
+<span class="nc" id="L67">            Integer target = 4;</span>
+<span class="nc" id="L68">            int left = 0;</span>
+<span class="nc" id="L69">            int right = input.size()-1;</span>
+<span class="nc" id="L70">            Integer result = binarySearch(input, target, left, right);</span>
 
 
-<span class="nc" id="L69">            try (Scope scope = span.makeCurrent()) {</span>
-<span class="nc" id="L70">                System.out.println(&quot;bin search&quot;);</span>
-<span class="nc" id="L71">            } catch(Throwable t) {</span>
-<span class="nc" id="L72">                span.recordException(t);</span>
-<span class="nc" id="L73">                throw t;</span>
+<span class="nc" id="L73">            try (Scope scope = span.makeCurrent()) {</span>
+<span class="nc" id="L74">                System.out.println(&quot;bin search&quot;);</span>
+<span class="nc" id="L75">            } catch(Throwable t) {</span>
+<span class="nc" id="L76">                span.recordException(t);</span>
+<span class="nc" id="L77">                throw t;</span>
             } finally {
-<span class="nc" id="L75">                span.end();</span>
+<span class="nc" id="L79">                span.end();</span>
             }
 
-<span class="nc" id="L78">            return &quot;Spans emitted&quot;;</span>
+<span class="nc" id="L82">            return &quot;Spans emitted&quot;;</span>
         });
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L84">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
