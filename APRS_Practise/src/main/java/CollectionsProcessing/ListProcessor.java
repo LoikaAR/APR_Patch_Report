@@ -56,19 +56,12 @@ public class ListProcessor {
         }
 
         String big_bad_string = "HELLO THERE PLEASE NOTICE ME";
+        big_bad_string = "IM MISTER FROG THIS IS MY SHOW I ATE THE BUG ONMUNMOUM I ATE THE BUG THIS IS THE END I LOVE YOU";
         int h = 3;
+        h = 2;
         int w = 4;
         int p = h+w;
-
         System.out.println(h + w + p);
-
-//        ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
-//        lp.newMethod(5);
-//        System.out.println(lp.tracer);
-//
-//        Span span = lp.tracer.spanBuilder("binarySearch").startSpan();
-//        span.getSpanContext();
-//        System.out.println(span);
 
         System.out.println("main called");
         System.out.println(binarySearch(input, 5, 0, input.size()-1));

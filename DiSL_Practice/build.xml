@@ -1,4 +1,4 @@
-<project name="AJPDislTutorial" default="build" basedir=".">
+<project name="APRS_DiSL" default="build" basedir=".">
 	<property name = "testdir" location = "test" />
 
 	<path id="profiler.classpath">
@@ -10,6 +10,14 @@
 		<pathelement location="lib/hamcrest-core-1.3.jar"/>
 		<pathelement location="${main.build.dir}"/>
 	</path>
+
+	<target name = "test">
+		<junit>
+			<classpath refid = "classpath.test" />
+			<formatter type = "brief" usefile = "false" />
+			<test name = "ListProcTest" />
+		</junit>
+	</target>
 
 	<target name="compile-profiler">
 		<mkdir dir="bin-profiler" />

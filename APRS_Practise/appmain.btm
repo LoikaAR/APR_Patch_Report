@@ -1,43 +1,26 @@
 RULE trace main entry
-
-CLASS ListProcessor
-
+CLASS Simple
 METHOD main
-
 AT ENTRY
 IF true
-
 DO traceln("entering main");
+ENDRULE
 
+
+RULE trace vars
+CLASS Simple
+METHOD adder
+AT WRITE h
+DO traceln("hello");
 ENDRULE
 
  
-
 RULE trace main exit
-
-CLASS ListProcessor
-
+CLASS Simple
 METHOD main
-
 AT EXIT
-
 IF true
-
-DO traceln("exiting main")
-
+DO traceln("exiting main");
 ENDRULE
 
 
-
-RULE trace variables
-
-CLASS ListProcessor
-
-METHOD main
-
-AT ENTRY
-IF true
-
-DO traceln("Variable:" + $1);
-
-ENDRULE

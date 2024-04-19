@@ -2,13 +2,27 @@ package aprs_listproc;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 public class Main {
+
+    public String instance_string = "Instance Field String of Main Class";
+    public Integer instance_integer = 5234;
+
+    public String getName() {
+        return "this is called Main";
+    }
 
     public Main() {
     }
 
+
+//    public int binarySearch(int f) {
+//        int w = f + 1;
+//        w = w + 3;
+//        return w;
+//    }
+
     public Integer binarySearch(int input[], int target) {
+        int hello = 38;
         int l = 0;                          // 0
         int r = input.length-1;             // 0
 
@@ -16,6 +30,7 @@ public class Main {
             int mid = l + (r-l) / 2;        // 1
 
             if (input[mid] == target) {     // 2
+                hello = 27;
                 return mid;                 // 3
             }
 
@@ -32,6 +47,8 @@ public class Main {
         int in[] = {0,1,2,3,4,5};
         int target = 3;
         Main m = new Main();
+        String someString = m.instance_string;
         m.binarySearch(in, target);
+//        m.binarySearch(78);
     }
 }
