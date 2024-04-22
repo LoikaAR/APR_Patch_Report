@@ -1,11 +1,27 @@
 package aprs_listproc;
 
+import java.util.Map;
+import java.util.Iterator;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
-import com.google.gson.Gson;
+import java.util.concurrent.ConcurrentHashMap;
+//import org.json.simple.JSONObject;
 
 public class Profiler {
     public static AtomicLong nBytecodeExecuted = new AtomicLong(0);
     private static AtomicLong nAllocations;
+    public static ConcurrentHashMap<String, Object> beforeBodyOutput = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> afterBodyOutput = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> varsBeforeBody = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> varsAfterBody = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> methodsInvoked = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> methodInfo = new ConcurrentHashMap<String, Object>();
+    public static ConcurrentHashMap<String, Object> jsonBodyOutput = new ConcurrentHashMap<String, Object>();
+
+
 
     // this will run at the end of the program
     static {
@@ -13,9 +29,53 @@ public class Profiler {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                Instrumentation.afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
+                afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
                 System.out.println("#Bytecodes executed: " + nBytecodeExecuted.get());
-                JsonProcessor.process(Instrumentation.afterBodyOutput);
+                jsonBodyOutput.put("Before", beforeBodyOutput);
+                jsonBodyOutput.put("After", afterBodyOutput);
+
+                System.out.println(jsonBodyOutput);
+                try {
+                    File file = new File("output.json");
+                    BufferedWriter bf = new BufferedWriter(new FileWriter(file));
+                    System.out.println("writing to output");
+                    bf.write("{\"Before\": {");
+                    bf.write("\"Vars\": {");
+                    for (Map.Entry<String, Object> entry : varsBeforeBody.entrySet()) {
+                        bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                    }
+                    bf.write("}},\n");
+
+                    bf.write("\"After\": {");
+                    bf.write("\"Vars\": {");
+                    for (Map.Entry<String, Object> entry : varsAfterBody.entrySet()) {
+                        bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                    }
+                    bf.write("}},");
+
+                    bf.write("\"Methods_Invoked\": {");
+                    for (Map.Entry<String, Object> entry : methodsInvoked.entrySet()) {
+                        bf.write("\"" + entry.getKey() + "\"" + ": " + entry.getValue() + ",");
+                    }
+                    bf.write("},");
+
+                    bf.write("\"#Bytecodes_executed\": " + "\"" + afterBodyOutput.get("#Bytecodes_executed") + "\"" + ", ");
+                    bf.write("\"#Objects_allocated\": " + "\"" + afterBodyOutput.get("#Objects_allocated") + "\"" + ", ");
+                    bf.write("\"#Methods_invoked\": " + "\"" + afterBodyOutput.get("#Methods_invoked") + "\"" + ", ");
+                    bf.write("\"#Methods_invoked\": " + "\"" + afterBodyOutput.get("#Methods_invoked") + "\"");
+
+                    bf.write("}");
+
+
+
+
+
+
+                    bf.close();
+                } catch (IOException e) {
+                    System.out.println("Error creating file");
+                    e.printStackTrace();
+                }
             }
         });
     }

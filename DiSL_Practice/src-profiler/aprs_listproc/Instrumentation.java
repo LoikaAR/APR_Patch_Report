@@ -20,28 +20,6 @@ public class Instrumentation {
     @SyntheticLocal
     static long entryTime;
 
-    // for variables after the first basic block
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> beforeBodyOutput = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> afterBodyOutput = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> varsBeforeBody = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> varsAfterBody = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> methodsInvoked = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, Object> methodInfo = new ConcurrentHashMap<String, Object>();
-
-    @SyntheticLocal
-    static ConcurrentHashMap<String, String> jsonBodyOutput = new ConcurrentHashMap<String, String>();
-
     @SyntheticLocal
     static long nInvocations = 0;
 
@@ -65,10 +43,10 @@ public class Instrumentation {
     @After(marker = BodyMarker.class, scope = "aprs_listproc.Main.main")
     static void onMainExit(MethodStaticContext msc, BasicBlockStaticContext bbsc) {
 
-        afterBodyOutput.put("#Objects_allocated", nAllocations);
-        afterBodyOutput.put("#Methods_invoked", nInvocations);
-        afterBodyOutput.put("#Field_accesses", nFieldAccesses);
-        afterBodyOutput.put("Methods_invoked", methodsInvoked);
+        Profiler.afterBodyOutput.put("#Objects_allocated", nAllocations);
+        Profiler.afterBodyOutput.put("#Methods_invoked", nInvocations);
+        Profiler.afterBodyOutput.put("#Field_accesses", nFieldAccesses);
+        Profiler.afterBodyOutput.put("Methods_invoked", Profiler.methodsInvoked);
 
         System.out.println("============================================");
         System.out.println("End of main:");
@@ -78,9 +56,8 @@ public class Instrumentation {
 
     @Before(marker = BodyMarker.class, scope = "aprs_listproc.Main.*")
     static void onMethodExit(MethodStaticContext msc, BasicBlockStaticContext bbsc) {
-        methodInfo.put("descriptor", msc.thisMethodDescriptor());
-        methodInfo.put("#Basic_blocks", bbsc.getCount());
-        methodsInvoked.put(msc.thisMethodName(), methodInfo);
+        String info = "{ \"descriptor\": " + "\"" + msc.thisMethodDescriptor() + "\", \"#Basic_blocks\": " + "\"" + bbsc.getCount() + "\" }";
+        Profiler.methodsInvoked.put(msc.thisMethodName(), info);
 
         System.out.println("============================================");
         System.out.format("Entering method %s \n>Total # of basic blocks in method: %d\n>Method descriptor: %s\n",
@@ -123,7 +100,7 @@ public class Instrumentation {
         String var_2 = dc.getLocalVariableValue(2, int.class).toString();
         int nBasicBlocks = bbsc.getCount();
 
-        beforeBodyOutput.put("#Basic_blocks", nBasicBlocks);
+        Profiler.beforeBodyOutput.put("#Basic_blocks", nBasicBlocks);
 
         System.out.println("============================================");
         System.out.println("Variables of method " + msc.thisMethodName() + " before execution:\n"
@@ -135,22 +112,13 @@ public class Instrumentation {
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch")
     static void afterBinarySearchBB(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
         if (bbsc.getIndex() == 0) {
-            String var_0 = dc.getLocalVariableValue(0, Object.class).toString();
-            String var_1 = dc.getLocalVariableValue(1, Integer.class).toString();
-            String var_2 = dc.getLocalVariableValue(2, int.class).toString();
-            String var_3 = dc.getLocalVariableValue(3, int.class).toString();
-            String var_4 = dc.getLocalVariableValue(4, int.class).toString();
-            String var_5 = dc.getLocalVariableValue(5, int.class).toString();
-
-            varsBeforeBody.put("var_0", var_0);
-            varsBeforeBody.put("var_1", var_1);
-            varsBeforeBody.put("var_2", var_2);
-            varsBeforeBody.put("var_3", var_3);
-            varsBeforeBody.put("var_4", var_4);
-            varsBeforeBody.put("var_5", var_5);
-            beforeBodyOutput.put("vars", varsBeforeBody);
-
-            System.out.println("VARS : " + var_0 + ", " + var_1 + ", " + var_2 + ", " + var_3 + ", " + var_4 + ", " + var_5);
+            Profiler.varsBeforeBody.put("var_0", dc.getLocalVariableValue(0, Object.class).toString());
+            Profiler.varsBeforeBody.put("var_1", dc.getLocalVariableValue(1, Integer.class).toString());
+            Profiler.varsBeforeBody.put("var_2", dc.getLocalVariableValue(2, int.class).toString());
+            Profiler.varsBeforeBody.put("var_3", dc.getLocalVariableValue(3, int.class).toString());
+            Profiler.varsBeforeBody.put("var_4", dc.getLocalVariableValue(4, int.class).toString());
+            Profiler.varsBeforeBody.put("var_5", dc.getLocalVariableValue(5, int.class).toString());
+            Profiler.beforeBodyOutput.put("vars", Profiler.varsBeforeBody);
         }
     }
 
@@ -167,15 +135,15 @@ public class Instrumentation {
         String var_5 = dc.getLocalVariableValue(5, int.class).toString();
         String output = dc.getStackValue(0, Integer.class).toString();
 
-        varsAfterBody.put("var_0", var_0);
-        varsAfterBody.put("var_1", var_1);
-        varsAfterBody.put("var_2", var_2);
-        varsAfterBody.put("var_3", var_3);
-        varsAfterBody.put("var_4", var_4);
-        varsAfterBody.put("var_5", var_5);
+        Profiler.varsAfterBody.put("var_0", var_0);
+        Profiler.varsAfterBody.put("var_1", var_1);
+        Profiler.varsAfterBody.put("var_2", var_2);
+        Profiler.varsAfterBody.put("var_3", var_3);
+        Profiler.varsAfterBody.put("var_4", var_4);
+        Profiler.varsAfterBody.put("var_5", var_5);
 
-        afterBodyOutput.put("vars", varsAfterBody);
-        afterBodyOutput.put("output", output);
+        Profiler.afterBodyOutput.put("vars", Profiler.varsAfterBody);
+        Profiler.afterBodyOutput.put("output", output);
 
         System.out.println("============================================");
         System.out.println("Variables of method " + msc.thisMethodName() + " after execution:\n"

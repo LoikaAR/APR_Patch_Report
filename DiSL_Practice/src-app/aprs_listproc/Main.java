@@ -8,7 +8,7 @@ public class Main {
     public Integer instance_integer = 5234;
 
     public String getName() {
-        return "this is called Main";
+        return "Class name = Main";
     }
 
     public Main() {
