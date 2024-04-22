@@ -15,14 +15,13 @@ public class Main {
     }
 
 
-//    public int binarySearch(int f) {
-//        int w = f + 1;
-//        w = w + 3;
-//        return w;
+//    public int binarySearch(int f[]) {
+//        int d = f[1];
+//        return f[2];
 //    }
 
     public Integer binarySearch(int input[], int target) {
-        int hello = 38;
+        int hello = 38;                     // 0
         int l = 0;                          // 0
         int r = input.length-1;             // 0
 
@@ -30,7 +29,7 @@ public class Main {
             int mid = l + (r-l) / 2;        // 1
 
             if (input[mid] == target) {     // 2
-                hello = 27;
+                hello = 27;                 // 2?
                 return mid;                 // 3
             }
 
@@ -49,6 +48,6 @@ public class Main {
         Main m = new Main();
         String someString = m.instance_string;
         m.binarySearch(in, target);
-//        m.binarySearch(78);
+//        m.binarySearch(in);
     }
 }

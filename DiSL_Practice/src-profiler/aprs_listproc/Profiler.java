@@ -1,9 +1,10 @@
 package aprs_listproc;
 
 import java.util.concurrent.atomic.AtomicLong;
+import com.google.gson.Gson;
 
 public class Profiler {
-    private static AtomicLong nBytecodeExecuted = new AtomicLong(0);
+    public static AtomicLong nBytecodeExecuted = new AtomicLong(0);
     private static AtomicLong nAllocations;
 
     // this will run at the end of the program
@@ -12,8 +13,9 @@ public class Profiler {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
+                Instrumentation.afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
                 System.out.println("#Bytecodes executed: " + nBytecodeExecuted.get());
-                System.out.println("#Objects allocated: " + nAllocations.get());
+                JsonProcessor.process(Instrumentation.afterBodyOutput);
             }
         });
     }
