@@ -18,8 +18,8 @@ public class Profiler {
     public static ConcurrentHashMap<String, Object> varsBeforeBody = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> varsAfterBody = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> methodsInvoked = new ConcurrentHashMap<String, Object>();
-    public static ConcurrentHashMap<String, Object> methodInfo = new ConcurrentHashMap<String, Object>();
-    public static ConcurrentHashMap<String, Object> jsonBodyOutput = new ConcurrentHashMap<String, Object>();
+//    public static ConcurrentHashMap<String, Object> methodInfo = new ConcurrentHashMap<String, Object>();
+//    public static ConcurrentHashMap<String, Object> jsonBodyOutput = new ConcurrentHashMap<String, Object>();
 
 
 
@@ -34,43 +34,53 @@ public class Profiler {
                 jsonBodyOutput.put("Before", beforeBodyOutput);
                 jsonBodyOutput.put("After", afterBodyOutput);
 
-                System.out.println(jsonBodyOutput);
+//                System.out.println(jsonBodyOutput);
                 try {
                     File file = new File("output.json");
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     bf.write("{\"Before\": {");
                     bf.write("\"Vars\": {");
+                    int counter = 0;
                     for (Map.Entry<String, Object> entry : varsBeforeBody.entrySet()) {
-                        bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                        counter++;
+                        if (counter == varsBeforeBody.size()) {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
+                        } else {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                        }
                     }
                     bf.write("}},\n");
 
                     bf.write("\"After\": {");
                     bf.write("\"Vars\": {");
+                    counter = 0;
                     for (Map.Entry<String, Object> entry : varsAfterBody.entrySet()) {
-                        bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                        counter++;
+                        if (counter == varsAfterBody.size()) {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
+                        } else {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                        }
                     }
-                    bf.write("}},");
+                    bf.write("},");
 
                     bf.write("\"Methods_Invoked\": {");
+                    counter = 0;
                     for (Map.Entry<String, Object> entry : methodsInvoked.entrySet()) {
-                        bf.write("\"" + entry.getKey() + "\"" + ": " + entry.getValue() + ",");
+                        counter++;
+                        if (counter == methodsInvoked.size()) {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + entry.getValue());
+                        } else {
+                            bf.write("\"" + entry.getKey() + "\"" + ": " + entry.getValue() + ",");
+                        }
                     }
                     bf.write("},");
 
                     bf.write("\"#Bytecodes_executed\": " + "\"" + afterBodyOutput.get("#Bytecodes_executed") + "\"" + ", ");
                     bf.write("\"#Objects_allocated\": " + "\"" + afterBodyOutput.get("#Objects_allocated") + "\"" + ", ");
-                    bf.write("\"#Methods_invoked\": " + "\"" + afterBodyOutput.get("#Methods_invoked") + "\"" + ", ");
                     bf.write("\"#Methods_invoked\": " + "\"" + afterBodyOutput.get("#Methods_invoked") + "\"");
-
-                    bf.write("}");
-
-
-
-
-
-
+                    bf.write("}}");
                     bf.close();
                 } catch (IOException e) {
                     System.out.println("Error creating file");

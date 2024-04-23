@@ -153,29 +153,3 @@ public class Instrumentation {
         );
     }
 }
-
-    // Before entering the body of binarySearch method:
-//    @Before(marker = BodyMarker.class, scope = "aprs_listproc.Main.binarySearch")
-//    static void onMethodEntry(MethodStaticContext msc, BasicBlockStaticContext bbsc) {
-//        entryTime = System.nanoTime();
-//        System.out.format("Entering method %s\n Total # of basic blocks in method: %d\n",
-//                msc.thisMethodName(),
-//                bbsc.getCount());
-//    }
-
-
-    // Before entering each basic block of binarySearch method:
-//    @Before(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch")
-//    static void onBasicBlockEntry(BasicBlockStaticContext bbsc, DynamicContext dc) {
-//        System.out.println("Entering basic block " + bbsc.getIndex() + ":\n"
-//                + bbsc.getIndex());
-//        System.out.println("Local Variables:");
-//
-//        String var_1 = dc.getLocalVariableValue(0, Integer.class).toString();
-//        String var_2 = dc.getLocalVariableValue(1, Integer.class).toString();
-//        String var_3 = dc.getLocalVariableValue(2, int.class).toString();
-//
-//        System.out.println(var_1);
-//        System.out.println(var_2);
-//        System.out.println(var_3);
-//    }

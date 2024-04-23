@@ -1,24 +1,14 @@
 package CollectionsProcessing;
 
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.trace.TracerProvider;
-import io.opentelemetry.api.trace.Tracer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ListProcessor {
-    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();
-    private Tracer tracer;
-
-
     ArrayList<Integer> list = new ArrayList<Integer>();
 
-    public ListProcessor(ArrayList<Integer> in, OpenTelemetry openTelemetry) {
+    public ListProcessor(ArrayList<Integer> in) {
         this.list = in;
         Collections.sort(this.list);
-        this.tracer = openTelemetry.getTracer(ListProcessor.class.getName());
     }
 
     /**
@@ -55,8 +45,13 @@ public class ListProcessor {
             input.add(i);
         }
 
-        String big_bad_string = "HELLO THERE PLEASE NOTICE ME";
-        big_bad_string = "IM MISTER FROG THIS IS MY SHOW I ATE THE BUG ONMUNMOUM I ATE THE BUG THIS IS THE END I LOVE YOU";
+        String big_bad_string = "HELLO THERE";
+        big_bad_string = "IM MISTER FROG THIS IS MY SHOW I EAT THE BUG ONMUNMOUM I ATE THE BUG THIS IS THE END I LOVE YOU";
+
+        if (big_bad_string.endsWith("U")) {
+            System.out.println("MR FROG");
+        }
+
         int h = 3;
         h = 2;
         int w = 4;

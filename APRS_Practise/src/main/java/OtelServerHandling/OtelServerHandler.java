@@ -63,7 +63,7 @@ public class OtelServerHandler {
             for (int i = 0; i < 10; i++) {
                 input.add(i);
             }
-            ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
+            ListProcessor lp = new ListProcessor(input);
             Integer target = 4;
             int left = 0;
             int right = input.size()-1;
