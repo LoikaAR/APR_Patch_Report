@@ -1,78 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListProcessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">APRS_Practise</a> &gt; <a href="index.source.html" class="el_package">CollectionsProcessing</a> &gt; <span class="el_source">ListProcessor.java</span></div><h1>ListProcessor.java</h1><pre class="source lang-java linenums">package CollectionsProcessing;
 
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.trace.TracerProvider;
-import io.opentelemetry.api.trace.Tracer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ListProcessor {
-<span class="nc" id="L12">    TracerProvider tracerProvider = GlobalOpenTelemetry.get().getTracerProvider();</span>
-    private Tracer tracer;
 
+<span class="fc" id="L8">    public String instance_string = &quot;Instance Field String of Main Class&quot;;</span>
+<span class="fc" id="L9">    public Integer instance_integer = 5234;</span>
 
-<span class="nc" id="L16">    ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();</span>
-
-<span class="nc" id="L18">    public ListProcessor(ArrayList&lt;Integer&gt; in, OpenTelemetry openTelemetry) {</span>
-<span class="nc" id="L19">        this.list = in;</span>
-<span class="nc" id="L20">        Collections.sort(this.list);</span>
-<span class="nc" id="L21">        this.tracer = openTelemetry.getTracer(ListProcessor.class.getName());</span>
-<span class="nc" id="L22">    }</span>
-
-    /**
-     *
-     * @param input the input list
-     * @param target the target
-     * @return the index of target if it exists, -1 otherwise
-     */
-    public static Integer binarySearch(ArrayList&lt;Integer&gt; input, Integer target, int l, int r) {
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (r &gt;= l) {</span>
-<span class="fc" id="L32">            int midIdx = l + (r-l)/2;</span>
-<span class="fc" id="L33">            Integer midElem = input.get(midIdx);</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">            if (midElem.equals(target)) {</span>
-<span class="fc" id="L35">                return midIdx+1;</span>
-            }
-
-<span class="fc bfc" id="L38" title="All 2 branches covered.">            if (midElem &gt; target) {</span>
-<span class="fc" id="L39">                return binarySearch(input, target, l, midIdx-1);</span>
-            } else {
-<span class="fc" id="L41">                return binarySearch(input, target,midIdx+1,r);</span>
-            }
-        }
-<span class="fc" id="L44">        return -1;</span>
+    public String getName() {
+<span class="nc" id="L12">        return &quot;Class name = Main&quot;;</span>
     }
 
-    public void newMethod(int i) {
-<span class="nc" id="L48">        System.out.println(&quot;the newMethod called&quot;);</span>
-<span class="nc" id="L49">        int j = i + 10;</span>
-<span class="nc" id="L50">    }</span>
+<span class="fc" id="L15">    public ListProcessor() {</span>
+
+<span class="fc" id="L17">    }</span>
+
+    public Integer binarySearch(int input[], int target) {
+<span class="fc" id="L20">        int hello = 38;                     // 0</span>
+<span class="fc" id="L21">        int l = 0;                          // 0</span>
+<span class="fc" id="L22">        int r = input.length-1;             // 0</span>
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        while (l &lt;= r) {                    // 1</span>
+<span class="fc" id="L25">            int mid = l + (r-l) / 2;        // 1</span>
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            if (input[mid] == target) {     // 2</span>
+<span class="fc" id="L28">                hello = 27;                 // 2</span>
+<span class="fc" id="L29">                return mid+1;                 // 3</span>
+            }
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (input[mid] &lt; target) {      // 4</span>
+<span class="fc" id="L33">                l = mid + 1;                // 5</span>
+            } else {                        // 6
+<span class="fc" id="L35">                r = mid - 1;                // 7</span>
+            }
+<span class="fc" id="L37">        }</span>
+<span class="fc" id="L38">        return -1;                          // 8</span>
+    }
 
     public static void main(String[] args) {
-<span class="nc" id="L53">        ArrayList&lt;Integer&gt; input = new ArrayList&lt;Integer&gt;();</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
-<span class="nc" id="L55">            input.add(i);</span>
-        }
-<span class="nc" id="L57">        synchronized (input) {</span>
-<span class="nc" id="L58">            String big_bad_string = &quot;HELLO THERE PLEASE NOTICE ME&quot;;</span>
-<span class="nc" id="L59">            final int h = 3;</span>
-<span class="nc" id="L60">            int w = 4;</span>
-<span class="nc" id="L61">            int p = h+w;</span>
-<span class="nc" id="L62">            System.out.println(h + w + p);</span>
-<span class="nc" id="L63">        }</span>
+<span class="nc" id="L42">        System.out.println(&quot;Executing main&quot;);</span>
+<span class="nc" id="L43">        int in[] = {0,1,2,3,4,5};</span>
+<span class="nc" id="L44">        int target = 3;</span>
 
+<span class="nc" id="L46">        ListProcessor m = new ListProcessor();</span>
+<span class="nc" id="L47">        String someString = m.instance_string;</span>
+<span class="nc" id="L48">        Integer someInteger = m.instance_integer;</span>
+<span class="nc" id="L49">        System.out.println(m.binarySearch(in, target));</span>
 
-//        ListProcessor lp = new ListProcessor(input, OpenTelemetry.noop());
-//        lp.newMethod(5);
-//        System.out.println(lp.tracer);
-//
-//        Span span = lp.tracer.spanBuilder(&quot;binarySearch&quot;).startSpan();
-//        span.getSpanContext();
-//        System.out.println(span);
-
-<span class="nc" id="L74">        System.out.println(&quot;main called&quot;);</span>
-<span class="nc" id="L75">        System.out.println(binarySearch(input, 5, 0, input.size()-1));</span>
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

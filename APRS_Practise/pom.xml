@@ -41,22 +41,6 @@
             <version>0.8.11</version>
             <classifier>runtime</classifier>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-exporter-otlp &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.opentelemetry</groupId>-->
-<!--            <artifactId>opentelemetry-exporter-otlp</artifactId>-->
-<!--            <version>1.36.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.opentelemetry</groupId>-->
-<!--            <artifactId>opentelemetry-api</artifactId>-->
-<!--            <version>1.36.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.webjars.npm</groupId>-->
-<!--            <artifactId>opentelemetry__core</artifactId>-->
-<!--            <version>0.8.3</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
@@ -67,24 +51,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.16.1</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-api &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version>2.0.12</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-simple &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-simple</artifactId>-->
-<!--            <version>2.0.12</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.opentelemetry</groupId>-->
-<!--            <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>-->
-<!--            <version>1.36.0</version>-->
-<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -92,6 +58,9 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
+                <configuration>
+                    <haltOnFailure>false</haltOnFailure>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

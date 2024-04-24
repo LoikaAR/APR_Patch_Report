@@ -14,12 +14,6 @@ public class Main {
     public Main() {
     }
 
-
-//    public int binarySearch(int f[]) {
-//        int d = f[1];
-//        return f[2];
-//    }
-
     public Integer binarySearch(int input[], int target) {
         int hello = 38;                     // 0
         int l = 0;                          // 0
@@ -29,8 +23,8 @@ public class Main {
             int mid = l + (r-l) / 2;        // 1
 
             if (input[mid] == target) {     // 2
-                hello = 27;                 // 2?
-                return mid;                 // 3
+                hello = 27;                 // 2
+                return mid+1;               // 3
             }
 
             if (input[mid] < target) {      // 4
@@ -47,7 +41,7 @@ public class Main {
         int target = 3;
         Main m = new Main();
         String someString = m.instance_string;
+        Integer someInteger = m.instance_integer;
         m.binarySearch(in, target);
-//        m.binarySearch(in);
     }
 }

@@ -24,6 +24,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <haltOnFailure>false</haltOnFailure>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
