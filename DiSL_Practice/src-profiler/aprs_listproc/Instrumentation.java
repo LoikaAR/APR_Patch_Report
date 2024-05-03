@@ -1,6 +1,5 @@
 package aprs_listproc;
 
-// observes aprs_listproc.Main
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import ch.usi.dag.disl.annotation.After;
@@ -58,12 +57,6 @@ public class Instrumentation {
     static void onMethodExit(MethodStaticContext msc, BasicBlockStaticContext bbsc) {
         String info = "{ \"descriptor\": " + "\"" + msc.thisMethodDescriptor() + "\", \"#Basic_blocks\": " + "\"" + bbsc.getCount() + "\" }";
         Profiler.methodsInvoked.put(msc.thisMethodName(), info);
-
-        System.out.println("============================================");
-        System.out.format("Entering method %s \n>Total # of basic blocks in method: %d\n>Method descriptor: %s\n",
-                msc.thisMethodName(),
-                bbsc.getCount(),
-                msc.thisMethodDescriptor());
     }
 
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.*")
@@ -101,11 +94,9 @@ public class Instrumentation {
         int nBasicBlocks = bbsc.getCount();
 
         Profiler.beforeBodyOutput.put("#Basic_blocks", nBasicBlocks);
-
         System.out.println("============================================");
         System.out.println("Variables of method " + msc.thisMethodName() + " before execution:\n"
                 + var_0 + "\n" + var_1 + "\n" + var_2);
-        System.out.println("#Basic blocks in this method: " + bbsc.getCount());
     }
 
     // get all variable values after the execution of the first basic block of the instrumented method

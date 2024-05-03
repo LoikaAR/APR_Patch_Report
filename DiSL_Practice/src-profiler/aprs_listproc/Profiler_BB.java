@@ -10,9 +10,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.ConcurrentHashMap;
 //import org.json.simple.JSONObject;
 
-public class Profiler {
-    public static AtomicLong nBytecodeExecuted = new AtomicLong(0);
+public class Profiler_BB {
+    public static AtomicLong nTotalBytecodeExecuted = new AtomicLong(0);
+    public static AtomicLong nGlobalBytecodeExecuted = new AtomicLong(0);
+    public static AtomicLong nLocalBytecodeExecuted = new AtomicLong(0);
     private static AtomicLong nAllocations;
+
     public static ConcurrentHashMap<String, Object> beforeBodyOutput = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> afterBodyOutput = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> varsBeforeBody = new ConcurrentHashMap<String, Object>();
@@ -26,8 +29,11 @@ public class Profiler {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
-                System.out.println("#Bytecodes executed: " + nBytecodeExecuted.get());
+                System.out.println("#Bytecodes executed (total): " + nTotalBytecodeExecuted.get());
+                System.out.println("#Bytecodes executed (global scope): " + nGlobalBytecodeExecuted.get());
+                System.out.println("#Bytecodes executed (basic blocks 4, 6): " + nLocalBytecodeExecuted.get());
+
+                afterBodyOutput.put("#Bytecodes_executed", nTotalBytecodeExecuted.get());
 
                 try {
                     File file = new File("output.json");
@@ -85,8 +91,16 @@ public class Profiler {
         });
     }
 
-    public static void incrementBytecodeCounter(int count) {
-        nBytecodeExecuted.addAndGet(count);
+    public static void incrementBytecodeCounterTotal(int count) {
+        nTotalBytecodeExecuted.addAndGet(count);
+    }
+
+    public static void incrementBytecodeCounterGlobal(int count) {
+        nGlobalBytecodeExecuted.addAndGet(count);
+    }
+
+    public static void incrementBytecodeCounterLocal(int count) {
+        nLocalBytecodeExecuted.addAndGet(count);
     }
 
     public static void newAllocation() {

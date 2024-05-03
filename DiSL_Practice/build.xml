@@ -5,9 +5,9 @@
 		<fileset dir="lib" includes="*.jar" />
 	</path>
 
-	<path id="classpath">
-		<fileset dir="lib" includes="*.jar" />
-	</path>
+<!--	<path id="classpath">-->
+<!--		<fileset dir="lib" includes="*.jar" />-->
+<!--	</path>-->
 
 	<path id="classpath.test">
 		<pathelement location="lib/junit-4.12.jar"/>

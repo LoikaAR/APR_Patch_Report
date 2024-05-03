@@ -1,0 +1,40 @@
+{
+  "Before" : {
+    "Vars" : {
+      "var_4" : "0",
+      "var_5" : "5",
+      "var_0" : "aprs_listproc.Main@783e6358",
+      "var_1" : "6",
+      "var_2" : "3",
+      "var_3" : "38"
+    }
+  },
+  "After" : {
+    "Vars" : {
+      "var_4" : "3",
+      "var_5" : "3",
+      "var_0" : "aprs_listproc.Main@783e6358",
+      "var_1" : "6",
+      "var_2" : "3",
+      "var_3" : "27"
+    },
+    "Methods_Invoked" : {
+      "main" : {
+        "descriptor" : "([Ljava/lang/String;)V",
+        "#Basic_blocks" : "1"
+      },
+      "binarySearch" : {
+        "descriptor" : "([II)Ljava/lang/Integer;",
+        "#Basic_blocks" : "9"
+      },
+      "<init>" : {
+        "descriptor" : "()V",
+        "#Basic_blocks" : "1"
+      }
+    },
+    "#Bytecodes_executed" : "140",
+    "#Objects_allocated" : "1",
+    "#Methods_invoked" : "2",
+    "Output" : "4"
+  }
+}
