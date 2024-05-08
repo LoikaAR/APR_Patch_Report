@@ -30,9 +30,6 @@ public class Instrumentation_BB {
     static long nFieldAccesses = 0;
 
     @SyntheticLocal
-    static ConcurrentHashMap<String, String> LocalVars = new ConcurrentHashMap<String, String>();
-
-    @SyntheticLocal
     static long nBytecodesExecd = 0;
 
     // Before entering the body of main method:
@@ -48,26 +45,34 @@ public class Instrumentation_BB {
     }
 
     @After(marker = BytecodeMarker.class,
-            args = "invokestatic, invokespecial, invokeinterface, invokevirtual, invokedynamic")
-    public static void afterMethodInvocation() {
+            args = "invokestatic, invokespecial, invokeinterface, invokevirtual, invokedynamic",
+            scope = "aprs_listproc.Main.*")
+    public static void afterMethodInvocation(BasicBlockStaticContext bbsc) {
+        Profiler_BB.invocationsTrace.add(bbsc.getIndex());
         nInvocations++;
     }
 
-    @After(marker = BytecodeMarker.class, args = "new")
-    public static void afterObjectAllocation() {
+    @After(marker = BytecodeMarker.class, args = "new", scope = "aprs_listproc.Main.*")
+    public static void afterObjectAllocation(BasicBlockStaticContext bbsc) {
+        Profiler_BB.allocationsTrace.add(bbsc.getIndex());
         nAllocations++;
     }
 
-    @After(marker = BytecodeMarker.class, args = "getfield, putfield, getstatic, putstatic")
-    public static void afterFieldAccess() {
+    @After(marker = BytecodeMarker.class,
+            args = "getfield, putfield, getstatic, putstatic",
+            scope = "aprs_listproc.Main.*")
+    public static void afterFieldAccess(BasicBlockStaticContext bbsc) {
+        Profiler_BB.fieldAccessTrace.add(bbsc.getIndex());
         nFieldAccesses++;
     }
+
 //    ========================================== Local Variables Tracing ===============================================
     // for basic blocks with global scope
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch", guard=BasicBlockGuard.class)
     static void afterBinarySearchBB(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
-        // TODO: print vars, bytecodes executed
+        System.out.println("helloBB");
         Profiler_BB.incrementBytecodeCounterGlobal(bbsc.getSize());
+        ConcurrentHashMap<String, String> LocalVars = new ConcurrentHashMap<String, String>();
         LocalVars.put("var_0", dc.getLocalVariableValue(0, Object.class).toString());
         LocalVars.put("var_1", dc.getLocalVariableValue(1, Integer.class).toString());
         LocalVars.put("var_2", dc.getLocalVariableValue(2, int.class).toString());
@@ -90,7 +95,7 @@ public class Instrumentation_BB {
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch", guard=BasicBlockGuardInner.class)
     static void afterBinarySearchBBTwo(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
         Profiler_BB.incrementBytecodeCounterLocal(bbsc.getSize());
-
+        ConcurrentHashMap<String, String> LocalVars = new ConcurrentHashMap<String, String>();
         LocalVars.put("var_0", dc.getLocalVariableValue(0, Object.class).toString());
         LocalVars.put("var_1", dc.getLocalVariableValue(1, Integer.class).toString());
         LocalVars.put("var_2", dc.getLocalVariableValue(2, int.class).toString());

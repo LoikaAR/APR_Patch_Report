@@ -17,7 +17,6 @@ public class JsonHandler {
         JsonNode jsonNode = mapper.readTree(new File(path));
         String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
 
-
         try {
             File output_file = new File("../DiSL_Practice/formatted_output.json");
             BufferedWriter bf = new BufferedWriter(new FileWriter(output_file));
@@ -35,7 +34,6 @@ public class JsonHandler {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(new File(path));
         String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-
 
         try {
             File output_file = new File("../DiSL_Practice/formatted_BB_output.json");

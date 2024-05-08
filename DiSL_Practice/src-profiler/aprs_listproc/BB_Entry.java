@@ -6,6 +6,9 @@ public class BB_Entry {
     private int orderIdx;
     private int id;
     private int nBytecodes;
+    private int nInvocations;
+    private int nAllocations;
+    private int nFieldAccesses;
     private ConcurrentHashMap<String, String> localVars;
 
     public BB_Entry() {};
@@ -14,17 +17,32 @@ public class BB_Entry {
         this.id = id;
     }
 
-    public void setLocalVars(ConcurrentHashMap<String, String> localVars) {
-        this.localVars = localVars;
-    }
-
     public void setOrderIdx(int orderIdx) {
         this.orderIdx = orderIdx;
     }
 
-
     public void setnBytecodes(int nBytecodes) {
         this.nBytecodes = nBytecodes;
+    }
+
+    public void setnAllocations(int nAllocations) {
+        this.nAllocations = nAllocations;
+    }
+
+    public void setnInvocations(int nInvocations) {
+        this.nInvocations = nInvocations;
+    }
+
+    public void setnFieldAccesses(int nFieldAccesses) {
+        this.nFieldAccesses = nFieldAccesses;
+    }
+
+    public void setLocalVars(ConcurrentHashMap<String, String> localVars) {
+        this.localVars = localVars;
+    }
+
+    public int getOrderIdx() {
+        return orderIdx;
     }
 
     public int getId() {
@@ -35,11 +53,20 @@ public class BB_Entry {
         return nBytecodes;
     }
 
+    public int getnAllocations() {
+        return nAllocations;
+    }
+
+    public int getnInvocations() {
+        return nInvocations;
+    }
+
+    public int getnFieldAccesses() {
+        return nFieldAccesses;
+    }
+
     public ConcurrentHashMap<String, String> getLocalVars() {
         return localVars;
     }
 
-    public int getOrderIdx() {
-        return orderIdx;
-    }
 }

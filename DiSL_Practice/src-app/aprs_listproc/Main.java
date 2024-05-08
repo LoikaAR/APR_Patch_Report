@@ -31,7 +31,7 @@ public class Main {
 
         while (l <= r) {                    // 1
             int mid = l + (r-l) / 2;        // 1
-            String test_two = "bb1";        // 1?
+            String test_two = "bb1";        // 2
             if (input[mid] == target) {     // 2
                 hello = 27;                 // 2
                 return mid+1;               // 3
