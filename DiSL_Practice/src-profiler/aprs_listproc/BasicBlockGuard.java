@@ -1,7 +1,6 @@
 package aprs_listproc;
 
 import ch.usi.dag.disl.annotation.GuardMethod;
-//import ch.usi.dag.disl.guardcontext.*;
 import ch.usi.dag.disl.staticcontext.BasicBlockStaticContext;
 class BasicBlockGuard {
     @GuardMethod
@@ -22,5 +21,25 @@ class BasicBlockGuardInner {
     static boolean CheckBlock(BasicBlockStaticContext bbsc) {
         return bbsc.getIndex() == 4 || bbsc.getIndex() == 6;
     }
+}
 
+class BasicBlockGuardZero {
+    @GuardMethod
+    static boolean CheckBlock(BasicBlockStaticContext bbsc) {
+        return bbsc.getIndex() == 0;
+    }
+}
+
+class BasicBlockGuardFour {
+    @GuardMethod
+    static boolean CheckBlock(BasicBlockStaticContext bbsc) {
+        return bbsc.getIndex() == 4;
+    }
+}
+
+class BasicBlockGuardSix {
+    @GuardMethod
+    static boolean CheckBlock(BasicBlockStaticContext bbsc) {
+        return bbsc.getIndex() == 6;
+    }
 }

@@ -11,36 +11,24 @@ public class Main {
         return "Class name = Main";
     }
 
-    public Main() {
-    }
-
-    public void example(int input) {
-        int var_int = 38;
-
-        if (input > 1) {
-            var_int = 83;
-            String var_string = "new string";
-        }
-    }
-
     public Integer binarySearch(int input[], int target) {
-        String test = "bb0";                // 0
-        int hello = 38;                     // 0
+        String outer_string = "value_0";    // 0
+        int outer_int = 38;                 // 0
         int l = 0;                          // 0
         int r = input.length-1;             // 0
 
         while (l <= r) {                    // 1
             int mid = l + (r-l) / 2;        // 1
-            String test_two = "bb1";        // 2
+            String inner_string = "value_1";// 2
             if (input[mid] == target) {     // 2
-                hello = 27;                 // 2
+                outer_int = 27;             // 2
                 return mid+1;               // 3
             }
             if (input[mid] < target) {      // 4
                 l = mid + 1;                // 5
             } else {                        // 6
                 r = mid - 1;                // 7
-                test_two = "TESTBB";
+                inner_string = "different_value";
             }
 
         }

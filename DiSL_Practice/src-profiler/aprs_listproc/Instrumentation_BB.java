@@ -1,7 +1,9 @@
 package aprs_listproc;
 
 // observes aprs_listproc.Main
+import java.util.Map;
 import java.util.HashMap;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import ch.usi.dag.disl.annotation.After;
 import ch.usi.dag.disl.annotation.Before;
@@ -46,7 +48,7 @@ public class Instrumentation_BB {
 
     @After(marker = BytecodeMarker.class,
             args = "invokestatic, invokespecial, invokeinterface, invokevirtual, invokedynamic",
-            scope = "aprs_listproc.Main.*")
+            scope = "aprs_listproc.Main.binarySearch")
     public static void afterMethodInvocation(BasicBlockStaticContext bbsc) {
         Profiler_BB.invocationsTrace.add(bbsc.getIndex());
         nInvocations++;
@@ -70,23 +72,24 @@ public class Instrumentation_BB {
     // for basic blocks with global scope
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch", guard=BasicBlockGuard.class)
     static void afterBinarySearchBB(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
-        System.out.println("helloBB");
         Profiler_BB.incrementBytecodeCounterGlobal(bbsc.getSize());
-        ConcurrentHashMap<String, String> LocalVars = new ConcurrentHashMap<String, String>();
-        LocalVars.put("var_0", dc.getLocalVariableValue(0, Object.class).toString());
-        LocalVars.put("var_1", dc.getLocalVariableValue(1, Integer.class).toString());
-        LocalVars.put("var_2", dc.getLocalVariableValue(2, int.class).toString());
-        LocalVars.put("var_3", dc.getLocalVariableValue(3, String.class).toString());
-        LocalVars.put("var_4", dc.getLocalVariableValue(4, int.class).toString());
-        LocalVars.put("var_5", dc.getLocalVariableValue(5, int.class).toString());
-        LocalVars.put("var_6", dc.getLocalVariableValue(6, int.class).toString());
-        LocalVars.put("var_7", "out_of_scope");
-        LocalVars.put("var_8", "out_of_scope");
-;
+        HashMap<String, String> LocalVars = new HashMap<String, String>();
+        LocalVars.put("0", dc.getLocalVariableValue(0, Object.class).toString());
+        LocalVars.put("1", dc.getLocalVariableValue(1, Integer.class).toString());
+        LocalVars.put("2", dc.getLocalVariableValue(2, int.class).toString());
+        LocalVars.put("3", dc.getLocalVariableValue(3, String.class).toString());
+        LocalVars.put("4", dc.getLocalVariableValue(4, int.class).toString());
+        LocalVars.put("5", dc.getLocalVariableValue(5, int.class).toString());
+        LocalVars.put("6", dc.getLocalVariableValue(6, int.class).toString());
+        LocalVars.put("7", "out_of_scope");
+        LocalVars.put("8", "out_of_scope");
+
+        Map<String, String> LocalVarsSorted = Collections.synchronizedMap(LocalVars);
+
         BB_Entry bbEntry = new BB_Entry();
         bbEntry.setId(bbsc.getIndex());
         bbEntry.setnBytecodes(bbsc.getSize());
-        bbEntry.setLocalVars(LocalVars);
+        bbEntry.setLocalVars(LocalVarsSorted);
 
         Profiler_BB.BBTrace.add(bbEntry);
     }
@@ -95,21 +98,23 @@ public class Instrumentation_BB {
     @After(marker = BasicBlockMarker.class, scope = "aprs_listproc.Main.binarySearch", guard=BasicBlockGuardInner.class)
     static void afterBinarySearchBBTwo(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
         Profiler_BB.incrementBytecodeCounterLocal(bbsc.getSize());
-        ConcurrentHashMap<String, String> LocalVars = new ConcurrentHashMap<String, String>();
-        LocalVars.put("var_0", dc.getLocalVariableValue(0, Object.class).toString());
-        LocalVars.put("var_1", dc.getLocalVariableValue(1, Integer.class).toString());
-        LocalVars.put("var_2", dc.getLocalVariableValue(2, int.class).toString());
-        LocalVars.put("var_3", dc.getLocalVariableValue(3, String.class).toString());
-        LocalVars.put("var_4", dc.getLocalVariableValue(4, int.class).toString());
-        LocalVars.put("var_5", dc.getLocalVariableValue(5, int.class).toString());
-        LocalVars.put("var_6", dc.getLocalVariableValue(6, int.class).toString());
-        LocalVars.put("var_7", dc.getLocalVariableValue(7, int.class).toString());
-        LocalVars.put("var_8", dc.getLocalVariableValue(8, String.class).toString());
+        HashMap<String, String> LocalVars = new HashMap<String, String>();
+        LocalVars.put("0", dc.getLocalVariableValue(0, Object.class).toString());
+        LocalVars.put("1", dc.getLocalVariableValue(1, Integer.class).toString());
+        LocalVars.put("2", dc.getLocalVariableValue(2, int.class).toString());
+        LocalVars.put("3", dc.getLocalVariableValue(3, String.class).toString());
+        LocalVars.put("4", dc.getLocalVariableValue(4, int.class).toString());
+        LocalVars.put("5", dc.getLocalVariableValue(5, int.class).toString());
+        LocalVars.put("6", dc.getLocalVariableValue(6, int.class).toString());
+        LocalVars.put("7", dc.getLocalVariableValue(7, int.class).toString());
+        LocalVars.put("8", dc.getLocalVariableValue(8, String.class).toString());
+
+        Map<String, String> LocalVarsSorted = Collections.synchronizedMap(LocalVars);
 
         BB_Entry bbEntry = new BB_Entry();
         bbEntry.setId(bbsc.getIndex());
         bbEntry.setnBytecodes(bbsc.getSize());
-        bbEntry.setLocalVars(LocalVars);
+        bbEntry.setLocalVars(LocalVarsSorted);
 
         Profiler_BB.BBTrace.add(bbEntry);
     }

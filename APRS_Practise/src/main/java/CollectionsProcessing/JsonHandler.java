@@ -10,19 +10,21 @@ public class JsonHandler {
 
     public static void main(String[] args) throws IOException {
         HandleJsonTracesBB();
+        HandleJsonTraces();
     }
     public static void HandleJsonTraces() throws IOException {
-        String path = "../DiSL_Practice/output.json";
+        String path = "../DiSL_Practice/json_out/output.json";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(new File(path));
         String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
 
         try {
-            File output_file = new File("../DiSL_Practice/formatted_output.json");
+            File output_file = new File("../DiSL_Practice/json_out/formatted_output.json");
             BufferedWriter bf = new BufferedWriter(new FileWriter(output_file));
             bf.write(json);
             bf.close();
-            System.out.println("Successfully wrote to file");
+
+            System.out.println("Successfully wrote to file " + output_file.getName());
         } catch (IOException e) {
             System.out.println("Error writing to file");
             System.out.println(e.getMessage());
@@ -30,17 +32,19 @@ public class JsonHandler {
     }
 
     public static void HandleJsonTracesBB() throws IOException {
-        String path = "../DiSL_Practice/BB_output.json";
+        String path = "../DiSL_Practice/json_out/BB_output.json";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(new File(path));
         String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
 
         try {
-            File output_file = new File("../DiSL_Practice/formatted_BB_output.json");
+            File output_file = new File("../DiSL_Practice/json_out/formatted_BB_output.json");
+
             BufferedWriter bf = new BufferedWriter(new FileWriter(output_file));
             bf.write(json);
             bf.close();
-            System.out.println("Successfully wrote to file");
+
+            System.out.println("Successfully wrote to file " + output_file.getName());
         } catch (IOException e) {
             System.out.println("Error writing to file");
             System.out.println(e.getMessage());

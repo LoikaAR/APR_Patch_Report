@@ -39,10 +39,11 @@ public class Profiler_BB {
                 System.out.println("field access trace per basic block: " + fieldAccessTrace);
                 System.out.println("invocations trace per basic block: " + invocationsTrace);
 
-                for ()
+                // append the number of consecutive identical basic block id's to the corresponding bb_entry
+//                for ()
 
                 try {
-                    File file = new File("BB_output.json");
+                    File file = new File("./json_out/BB_output.json");
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     System.out.println(BBTrace);
@@ -61,9 +62,9 @@ public class Profiler_BB {
                         for (Map.Entry<String, String> entry : bbe.getLocalVars().entrySet()) {
                             counter++;
                             if (counter == bbe.getLocalVars().size()) {
-                                bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
+                                bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
                             } else {
-                                bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                                bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
                             }
                         }
                         bf.write("},\n");

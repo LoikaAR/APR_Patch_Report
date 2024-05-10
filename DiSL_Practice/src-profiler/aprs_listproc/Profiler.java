@@ -1,6 +1,8 @@
 package aprs_listproc;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.io.File;
 import java.io.FileWriter;
@@ -15,10 +17,10 @@ public class Profiler {
     private static AtomicLong nAllocations;
     public static ConcurrentHashMap<String, Object> beforeBodyOutput = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> afterBodyOutput = new ConcurrentHashMap<String, Object>();
-    public static ConcurrentHashMap<String, Object> varsBeforeBody = new ConcurrentHashMap<String, Object>();
-    public static ConcurrentHashMap<String, Object> varsAfterBody = new ConcurrentHashMap<String, Object>();
     public static ConcurrentHashMap<String, Object> methodsInvoked = new ConcurrentHashMap<String, Object>();
 
+    public static HashMap<String, Object> varsBeforeBody = new HashMap<String, Object>();
+    public static HashMap<String, Object> varsAfterBody = new HashMap<String, Object>();
 
     // this will run at the end of the program
     static {
@@ -29,8 +31,11 @@ public class Profiler {
                 afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
                 System.out.println("#Bytecodes executed: " + nBytecodeExecuted.get());
 
+//                System.out.println(varsBeforeBody);
+//                System.out.println(varsAfterBody);
+
                 try {
-                    File file = new File("output.json");
+                    File file = new File("./json_out/output.json");
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     bf.write("{\"Before\": {");
@@ -39,9 +44,9 @@ public class Profiler {
                     for (Map.Entry<String, Object> entry : varsBeforeBody.entrySet()) {
                         counter++;
                         if (counter == varsBeforeBody.size()) {
-                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
+                            bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
                         } else {
-                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                            bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
                         }
                     }
                     bf.write("}},\n");
@@ -52,9 +57,9 @@ public class Profiler {
                     for (Map.Entry<String, Object> entry : varsAfterBody.entrySet()) {
                         counter++;
                         if (counter == varsAfterBody.size()) {
-                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
+                            bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\"");
                         } else {
-                            bf.write("\"" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
+                            bf.write("\"var_" + entry.getKey() + "\"" + ": " + "\"" + entry.getValue() + "\",");
                         }
                     }
                     bf.write("},");

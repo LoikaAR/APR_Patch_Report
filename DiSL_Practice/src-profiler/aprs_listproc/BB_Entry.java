@@ -1,4 +1,7 @@
 package aprs_listproc;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -9,7 +12,7 @@ public class BB_Entry {
     private int nInvocations;
     private int nAllocations;
     private int nFieldAccesses;
-    private ConcurrentHashMap<String, String> localVars;
+    private Map<String, String> localVars;
 
     public BB_Entry() {};
 
@@ -37,7 +40,7 @@ public class BB_Entry {
         this.nFieldAccesses = nFieldAccesses;
     }
 
-    public void setLocalVars(ConcurrentHashMap<String, String> localVars) {
+    public void setLocalVars(Map<String, String> localVars) {
         this.localVars = localVars;
     }
 
@@ -65,7 +68,7 @@ public class BB_Entry {
         return nFieldAccesses;
     }
 
-    public ConcurrentHashMap<String, String> getLocalVars() {
+    public Map<String, String> getLocalVars() {
         return localVars;
     }
 

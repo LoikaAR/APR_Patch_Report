@@ -10,4 +10,4 @@ bash ./startDiSLServer.sh
 
 sleep 1
 
-bash ./runInstrumented.sh aprs_listproc.Main
+bash ./runInstrumented.sh aprs_listproc.Main_$1
