@@ -1,5 +1,8 @@
 package SimilarityMeasures;
 
+import CollectionsProcessing.JsonHandler;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LevenshteinDistance {
@@ -27,5 +30,21 @@ public class LevenshteinDistance {
             prevRow = Arrays.copyOf(currRow, currRow.length);
         }
         return currRow[n];
+    }
+
+    public static void main(String[] args) {
+        try {
+            JsonHandler.HandleJsonTraces();
+            JsonHandler.HandleJsonTracesBB();
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+            System.out.println(e.getMessage());
+        }
+
+        int score = levenshteinTwoMatrixRows(JsonHandler.procJson.get("output_v1"),
+                JsonHandler.procJson.get("output_v2"));
+//        int score = levenshteinTwoMatrixRows("hello", "helo");
+
+        System.out.println("Levenshtein distance score: " + score);
     }
 }

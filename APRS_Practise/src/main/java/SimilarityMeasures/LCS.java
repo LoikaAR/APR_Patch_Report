@@ -1,5 +1,8 @@
 package SimilarityMeasures;
 
+import CollectionsProcessing.JsonHandler;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LCS {
@@ -22,6 +25,22 @@ public class LCS {
             prev = Arrays.copyOf(cur, m + 1);
         }
         return cur[m];
+    }
+
+    public static void main(String[] args) {
+        try {
+            JsonHandler.HandleJsonTraces();
+            JsonHandler.HandleJsonTracesBB();
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+            System.out.println(e.getMessage());
+        }
+
+        int score = longestCommonSubsequence(JsonHandler.procJson.get("output_v1"),
+                JsonHandler.procJson.get("output_v2"));
+//        int score = levenshteinTwoMatrixRows("hello", "helo");
+
+        System.out.println("Longest common subsequence length: " + score);
     }
 
 }
