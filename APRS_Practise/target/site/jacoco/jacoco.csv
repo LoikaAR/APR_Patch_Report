@@ -1,3 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 APRS_Practise,CollectionsProcessing,ListProcessor,51,60,0,6,9,17,2,5,2,2
-APRS_Practise,CollectionsProcessing,JsonHandler,23,0,0,0,6,0,2,0,2,0
+APRS_Practise,CollectionsProcessing,JsonHandler,108,0,0,0,32,0,4,0,4,0
+APRS_Practise,SimilarityMeasures,LevenshteinDistance,97,0,8,0,15,0,6,0,2,0
+APRS_Practise,SimilarityMeasures,LCS,81,0,6,0,12,0,5,0,2,0
