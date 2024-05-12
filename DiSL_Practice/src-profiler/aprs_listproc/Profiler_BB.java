@@ -39,11 +39,17 @@ public class Profiler_BB {
                 System.out.println("field access trace per basic block: " + fieldAccessTrace);
                 System.out.println("invocations trace per basic block: " + invocationsTrace);
 
-                // append the number of consecutive identical basic block id's to the corresponding bb_entry
-//                for ()
-
                 try {
-                    File file = new File("./json_out/BB_output.json");
+                    File file;
+                    file = new File("./json_out/BB_output_v1.json");
+                    if (file.exists()) {
+                        file = new File("./json_out/BB_output_v2.json");
+                        if (file.exists()) {
+                            file.delete();
+                            file = new File("./json_out/BB_output_v1.json");
+                        }
+                    }
+
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     System.out.println(BBTrace);

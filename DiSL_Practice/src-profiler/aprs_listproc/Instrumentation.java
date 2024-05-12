@@ -66,21 +66,22 @@ public class Instrumentation {
         Profiler.incrementBytecodeCounter(bbsc.getSize());
     }
 
-
     @After(marker = BytecodeMarker.class,
-            args = "invokestatic, invokespecial, invokeinterface, invokevirtual, invokedynamic")
+            args = "invokestatic, invokespecial, invokeinterface, invokevirtual, invokedynamic",
+            scope = "aprs_listproc.Main.*")
     public static void afterMethodInvocation() {
         nInvocations++;
     }
 
     @After(marker = BytecodeMarker.class,
-            args = "new")
+            args = "new", scope = "aprs_listproc.Main.*")
     public static void afterObjectAllocation() {
         nAllocations++;
     }
 
     @After(marker = BytecodeMarker.class,
-            args = "getfield, putfield, getstatic, putstatic")
+            args = "getfield, putfield, getstatic, putstatic",
+            scope = "aprs_listproc.Main.*")
     public static void afterFieldAccess() {
         nFieldAccesses++;
     }
@@ -90,15 +91,8 @@ public class Instrumentation {
     // if one argument is array, always stores its length at the next index
     @Before(marker = BodyMarker.class, scope = "aprs_listproc.Main.binarySearch")
     static void onBinSearchEntry(MethodStaticContext msc, BasicBlockStaticContext bbsc, DynamicContext dc) {
-        String var_0 = dc.getLocalVariableValue(0, Object.class).toString();
-        String var_1 = dc.getLocalVariableValue(1, Integer.class).toString();
-        String var_2 = dc.getLocalVariableValue(2, int.class).toString();
         int nBasicBlocks = bbsc.getCount();
-
         Profiler.beforeBodyOutput.put("#Basic_blocks", nBasicBlocks);
-        System.out.println("============================================");
-        System.out.println("Variables of method " + msc.thisMethodName() + " before execution:\n"
-                + var_0 + "\n" + var_1 + "\n" + var_2);
     }
 
     // get all variable values after the execution of the first basic block of the instrumented method
@@ -120,9 +114,6 @@ public class Instrumentation {
         Profiler.varsAfterBody.put("7", dc.getLocalVariableValue(7, int.class).toString());
         Profiler.varsAfterBody.put("8", dc.getLocalVariableValue(8, String.class).toString());
     }
-
-
-
 
     // After return of binarySearch method:
     @AfterReturning(marker = BodyMarker.class, scope = "aprs_listproc.Main.binarySearch")

@@ -1,10 +1,10 @@
 {
   "Before" : {
     "Vars" : {
-      "var_0" : "aprs_listproc.Main@783e6358",
+      "var_0" : "aprs_listproc.Main@735f7ae5",
       "var_1" : "6",
       "var_2" : "3",
-      "var_3" : "bb0",
+      "var_3" : "value_0",
       "var_4" : "38",
       "var_5" : "0",
       "var_6" : "5",
@@ -14,15 +14,15 @@
   },
   "After" : {
     "Vars" : {
-      "var_0" : "aprs_listproc.Main@783e6358",
+      "var_0" : "aprs_listproc.Main@735f7ae5",
       "var_1" : "6",
       "var_2" : "3",
-      "var_3" : "bb0",
+      "var_3" : "value_0",
       "var_4" : "27",
       "var_5" : "3",
       "var_6" : "3",
       "var_7" : "4",
-      "var_8" : "TESTBB"
+      "var_8" : "different_value"
     },
     "Methods_invoked" : {
       "main" : {

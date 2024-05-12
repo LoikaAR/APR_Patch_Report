@@ -31,11 +31,17 @@ public class Profiler {
                 afterBodyOutput.put("#Bytecodes_executed", nBytecodeExecuted.get());
                 System.out.println("#Bytecodes executed: " + nBytecodeExecuted.get());
 
-//                System.out.println(varsBeforeBody);
-//                System.out.println(varsAfterBody);
-
                 try {
-                    File file = new File("./json_out/output.json");
+                    File file;
+                    file = new File("./json_out/output_v1.json");
+                    if (file.exists()) {
+                        file = new File("./json_out/output_v2.json");
+                        if (file.exists()) {
+                            file.delete();
+                            file = new File("./json_out/output_v1.json");
+                        }
+                    }
+
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     bf.write("{\"Before\": {");
