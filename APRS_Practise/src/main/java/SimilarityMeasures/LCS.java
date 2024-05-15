@@ -29,8 +29,8 @@ public class LCS {
 
     public static void main(String[] args) {
         try {
-            JsonHandler.HandleJsonTraces();
-            JsonHandler.HandleJsonTracesBB();
+            JsonHandler.HandleJsonTraces(false);
+            JsonHandler.HandleJsonTraces(true);
         } catch (IOException e) {
             System.out.println("Error writing to file");
             System.out.println(e.getMessage());

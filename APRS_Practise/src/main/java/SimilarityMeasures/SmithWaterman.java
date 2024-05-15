@@ -18,35 +18,33 @@ import java.util.ArrayList;
 
 public class SmithWaterman {
 
-//    private final double scoreThreshold = 19.9;
-
     /**
      * The first input string
      */
-    private String str1;
+    private final String str1;
 
     /**
      * The second input String
      */
-    private String str2;
+    private final String str2;
 
     /**
      * The lengths of the input strings
      */
-    private int length1, length2;
+    private final int length1, length2;
 
     /**
      * The score matrix.
      * The true scores should be divided by the normalization factor.
      */
-    private double[][] score;
+    private final double[][] score;
 
     /**
      * The normalization factor.
      * To get the true score, divide the integer score used in computation
      * by the normalization factor.
      */
-    static final double NORM_FACTOR = 1.0;
+    static final double NORM_FACTOR = 10.0;
 
     /**
      * The similarity function constants.
@@ -101,7 +99,6 @@ public class SmithWaterman {
         }
 
         return (str1.charAt(i - 1) == str2.charAt(j  - 1)) ? MATCH_SCORE : MISMATCH_SCORE;
-//        return Blosum.getDistance(str1.charAt(i-1), str2.charAt(j-1));
     }
 
     /**
@@ -114,10 +111,6 @@ public class SmithWaterman {
         if (INDEL_SCORE >= 0) {
             throw new Error("Indel score must be negative");
         }
-
-//		if (isDistanceMatrixNull()) {
-//			throw new Error ("Distance Matrix is NULL");
-//		}
 
         int i; // length of prefix substring of str1
         int j; // length of prefix substring of str2
@@ -226,8 +219,8 @@ public class SmithWaterman {
     }
 
     /**
-     * given the bottom right corner point trace back  the top left conrner.
-     *  at entry: i, j hold bottom right (end of Aligment coords)
+     * given the bottom right corner point trace back  the top left corner.
+     *  at entry: i, j hold bottom right (end of Alignment coords)
      *  at return:  hold top left (start of Alignment coords)
      */
     private int [] traceback(int i, int j) {
@@ -276,7 +269,7 @@ public class SmithWaterman {
         // Note: empty alignments are not printed.
     }
     /**
-     * print the dynmaic programming matrix
+     * print the dynamic programming matrix
      */
     public void printDPMatrix()
     {
@@ -298,40 +291,11 @@ public class SmithWaterman {
         }
     }
 
-    /**
-     *  Return a set of Matches idenfied in Dynamic programming matrix.
-     * A match is a pair of subsequences whose score is higher than the
-     * preset scoreThreshold
-     **/
-//    public List getMatches()
-//    {
-//        ArrayList matchList = new ArrayList();
-//        int fA=0, fB=0;
-//        //	skip the first row and column, find the next maxScore after prevmaxScore
-//        for (int i = 1; i <= length1; i++) {
-//            for (int j = 1; j <= length2; j++) {
-//                if (score[i][j] > scoreThreshold && score[i][j]>score[i-1][j-1]
-//                        && score[i][j]>score[i-1][j] && score[i][j]>score[i][j-1])
-//                {
-//                    if (i==length1 || j==length2 ||  score[i][j]>score[i+1][j+1])
-//                    {
-//                        // should be lesser than prev maxScore
-//                        fA = i;
-//                        fB = j;
-//                        int [] f=traceback(fA, fB); // sets the x, y to startAlignment coordinates
-//                        matchList.add(new SimpleChaining.Match(f[0], i, f[1], j, score[i][j]/ NORM_FACTOR));
-//                    }
-//                }
-//            }
-//        }
-//        return matchList; // could be empty if no HSP scores are > scoreThreshold
-//    }
-
     public static void main(String[] args) {
 
         try {
-            JsonHandler.HandleJsonTraces();
-            JsonHandler.HandleJsonTracesBB();
+            JsonHandler.HandleJsonTraces(false);
+            JsonHandler.HandleJsonTraces(true);
         } catch (IOException e) {
             System.out.println("Error writing to file");
             System.out.println(e.getMessage());
@@ -347,7 +311,7 @@ public class SmithWaterman {
         System.out.println("\nThe maximum alignment score is: " +
                 sw.getAlignmentScore());
 
-        // number of max matching char ?given alignment *10
+        // number of max matching chars given the penalties for spaces++
 
     }
 }
