@@ -36,8 +36,8 @@ public class LCS {
             System.out.println(e.getMessage());
         }
 
-        int score = longestCommonSubsequence(JsonHandler.procJson.get("output_v1"),
-                JsonHandler.procJson.get("output_v2"));
+        int score = longestCommonSubsequence(JsonHandler.outJson.get("output_v1"),
+                JsonHandler.outJson.get("output_v2"));
 //        int score = levenshteinTwoMatrixRows("hello", "helo");
 
         System.out.println("Longest common subsequence length: " + score);

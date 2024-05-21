@@ -16,6 +16,7 @@ import ch.usi.dag.disl.dynamiccontext.DynamicContext;
 import ch.usi.dag.disl.staticcontext.MethodStaticContext;
 import ch.usi.dag.disl.staticcontext.BasicBlockStaticContext;
 import ch.usi.dag.disl.staticcontext.InstructionStaticContext;
+import org.junit.Ignore;
 
 public class Instrumentation {
     @SyntheticLocal

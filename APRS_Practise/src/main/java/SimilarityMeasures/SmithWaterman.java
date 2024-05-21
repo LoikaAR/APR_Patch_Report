@@ -211,7 +211,7 @@ public class SmithWaterman {
             printAlignments(i-1, j, str1.charAt(i-1) + aligned1, "_" + aligned2);
         }
         if ((prevCells[i][j] & DR_UP) > 0) {
-            printAlignments(i, j-1, "_" + aligned1, str2.charAt(j-1) + aligned2);
+            printAlignments(i, j-1, "*" + aligned1, str2.charAt(j-1) + aligned2);
         }
         if ((prevCells[i][j] & DR_DIAG) > 0) {
             printAlignments(i-1, j-1, str1.charAt(i-1) + aligned1, str2.charAt(j-1) + aligned2);
@@ -301,8 +301,8 @@ public class SmithWaterman {
             System.out.println(e.getMessage());
         }
 
-        SmithWaterman sw = new SmithWaterman(JsonHandler.procJson.get("output_v1"),
-                JsonHandler.procJson.get("output_v2"));
+        SmithWaterman sw = new SmithWaterman(JsonHandler.outJson.get("output_v1"),
+                JsonHandler.outJson.get("output_v2"));
 //        SmithWaterman sw = new SmithWaterman("hello", "hello");
 
         System.out.println("\nThe alignments with the maximum score are: \n");

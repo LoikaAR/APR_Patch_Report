@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,13 +12,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class JsonHandler {
-
-    public static HashMap<String, String> procJson = new HashMap<String, String>();
+    public static int CODE_MAX = 9999;
+    public static int curCode = 0;
+    public static HashMap<String, String> outJson = new HashMap<String, String>();
+    public static HashMap<String, String> encodingMap = new HashMap<String, String>();
 
     public static void main(String[] args) throws IOException {
         HandleJsonTraces(false);
         HandleJsonTraces(true);
-        System.out.println(procJson);
+
+        // remove "-" from end of each sequence
+        for (Map.Entry<String, String> entry : encodingMap.entrySet()) {
+            String newVal = entry.getValue().substring(0, entry.getValue().length()-3);
+            entry.setValue(newVal);
+        }
+
+        for (Map.Entry<String, String> entry : outJson.entrySet()) {
+            String newVal = entry.getValue().substring(0, entry.getValue().length()-3);
+            entry.setValue(newVal);
+        }
+
+
+        System.out.println(outJson);
+        System.out.println(encodingMap);
     }
     public static void HandleJsonTraces(boolean BB) throws IOException {
         String path_v1;
@@ -29,7 +46,7 @@ public class JsonHandler {
         ObjectMapper mapper_v1 = new ObjectMapper();
         JsonNode jsonNode_v1 = mapper_v1.readTree(new File(path_v1));
 
-        procJson.put(mapKeyV1, "");
+        outJson.put(mapKeyV1, "");
         traverse(jsonNode_v1, mapKeyV1);
 
 
@@ -42,7 +59,7 @@ public class JsonHandler {
         String mapKeyV2;
         mapKeyV2 = BB ? "output_v2" : "BB_output_v2";
 
-        procJson.put(mapKeyV2, "");
+        outJson.put(mapKeyV2, "");
         traverse(jsonNode_v2, mapKeyV2);
 
 
@@ -83,8 +100,38 @@ public class JsonHandler {
             }
         } else {
             // JsonNode root represents a single value field
-            procJson.put(mapKey, procJson.get(mapKey) + root.asText());
+            String val = String.valueOf(curCode);
+            if (encodingMap.containsKey(root.asText())) {
+                outJson.put(mapKey, outJson.get(mapKey) + encodingMap.get(root.asText()));
+            } else {
+//                encodingMap.put(encodingMap.get(root.asText()), String.valueOf(curCode));
+                int len = val.length();
+
+                // TODO make it work with any number of chars
+                if (len == 1) {
+                    val = val + "___ ";
+                    encodingMap.put(root.asText(), val);
+                } else if (len == 2) {
+                    val = val + "__ ";
+                    encodingMap.put(root.asText(), val);
+                } else if (len == 3) {
+                    val = val + "_ ";
+                    encodingMap.put(root.asText(), val);
+                } else {
+                    val = val + " ";
+                    encodingMap.put(root.asText(), val);
+                }
+                outJson.put(mapKey, outJson.get(mapKey) + val);
+                curCode++;
+
+                if (curCode >= CODE_MAX) {
+                    try {
+                        throw new Exception("Exception");
+                    } catch (Exception e) {
+                        System.out.println("Number of elements exceeds maximum allowed");
+                    }
+                }
+            }
         }
     }
-
 }

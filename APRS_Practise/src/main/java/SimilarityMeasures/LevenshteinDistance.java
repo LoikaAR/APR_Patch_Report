@@ -41,8 +41,8 @@ public class LevenshteinDistance {
             System.out.println(e.getMessage());
         }
 
-        int score = levenshteinTwoMatrixRows(JsonHandler.procJson.get("output_v1"),
-                JsonHandler.procJson.get("output_v2"));
+        int score = levenshteinTwoMatrixRows(JsonHandler.outJson.get("output_v1"),
+                JsonHandler.outJson.get("output_v2"));
 //        int score = levenshteinTwoMatrixRows("hello", "helo");
 
         System.out.println("Levenshtein distance score: " + score);
