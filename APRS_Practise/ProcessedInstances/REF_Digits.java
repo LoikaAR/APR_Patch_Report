@@ -5,7 +5,7 @@ class FloatObj {public float value; public FloatObj(){} public FloatObj(float i)
 class LongObj {public long value; public LongObj(){} public LongObj(long i){value = i;}}
 class DoubleObj {public double value; public DoubleObj(){} public DoubleObj(double i){value = i;}}
 class CharObj {public char value; public CharObj(){} public CharObj(char i){value = i;}}
-public class Digits {
+public class ClassDef {
 	public java.util.Scanner scanner;
 	public String output = "";
 

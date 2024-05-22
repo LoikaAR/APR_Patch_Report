@@ -40,7 +40,7 @@ class CharObj {
     }
 }
 
-public class digits_9013bd3b_001 {
+public class ClassDef {
     public java.util.Scanner scanner;
     public String output = "";
 
