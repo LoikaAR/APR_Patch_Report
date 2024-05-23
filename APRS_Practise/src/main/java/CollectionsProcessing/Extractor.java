@@ -1,7 +1,5 @@
 package CollectionsProcessing;
 
-import SimilarityMeasures.LCS;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -18,13 +16,15 @@ public class Extractor {
     private static long curLine = 1;
     public static void main(String[] args) throws IOException {
 
-//        ExtractInstance("digits");
-        ExtractTests("digits");
+        ExtractInstance("digits");
+//        ExtractTests("digits");
     }
 
     public static void ExtractInstance(String target) {
         String initDirPath = "../IntroClassJava/dataset/" + target;
         File dir = new File(initDirPath);
+
+        new File("./ProcessedInstances/" + target).mkdir();
 
         for (File repo : Objects.requireNonNull(dir.listFiles())) {
             for (File version : Objects.requireNonNull(repo.listFiles())) {
@@ -36,12 +36,11 @@ public class Extractor {
                     if (f.isFile() && f.getName().endsWith(".java")) {
                         String targetPath = targetDir + "/" + f.getName();
                         File targetFile = new File(targetPath);
-
                         String outPath;
                         if (!f.getName().contains("_")) {
-                            outPath = "./ProcessedInstances/" + "REF_" + f.getName();
+                            outPath = "./ProcessedInstances/" + target + "/" + "REF_" + f.getName();
                         } else {
-                            outPath = "./ProcessedInstances/" + f.getName();
+                            outPath = "./ProcessedInstances/" + target + "/" + f.getName();
                         }
                         File outFile = new File(outPath);
                         try {
@@ -126,8 +125,6 @@ public class Extractor {
     private static BufferedWriter splitTests(String projectName, File targetFile,
                                              File outFile, String outPath, int var, long lineCount) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(targetFile));
-        String fileContent = "";
-        String line;
         br.readLine(); // to omit package name
 
         BufferedWriter bf = new BufferedWriter(new FileWriter(outFile));
@@ -159,7 +156,6 @@ public class Extractor {
 
                     br.mark((int)curLine);
                     if (br.readLine().contains("}")) {
-                        System.out.println("END");
                         break;
                     }
                     br.reset();
@@ -179,11 +175,3 @@ public class Extractor {
         }
     }
 }
-
-
-
-// java:
-// extract all instances, process them
-// fn to extract one at a time by idx, distinguish ref
-
-// bash:
