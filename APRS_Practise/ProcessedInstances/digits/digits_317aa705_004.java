@@ -44,8 +44,8 @@ public class ClassDef {
     public java.util.Scanner scanner;
     public String output = "";
 
-    public static void main (String[]args) throws Exception {
-        digits_317aa705_004 mainClass = new digits_317aa705_004 ();
+    public static void main (String[]args)  {
+	ClassDef mainClass = new ClassDef();
         String output;
         if (args.length > 0) {
             mainClass.scanner = new java.util.Scanner (args[0]);
@@ -56,7 +56,8 @@ public class ClassDef {
         System.out.println (mainClass.output);
     }
 
-    public void exec () throws Exception {
+    public void exec ()  {
+	String name = "digits_317aa705_004";
         IntObj integer = new IntObj (), i = new IntObj (), digit = new IntObj ();
         output += (String.format ("\nEnter an integer > "));
         integer.value = scanner.nextInt ();

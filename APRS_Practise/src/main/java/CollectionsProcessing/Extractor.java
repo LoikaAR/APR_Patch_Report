@@ -17,14 +17,14 @@ public class Extractor {
     public static void main(String[] args) throws IOException {
 
         ExtractInstance("digits");
-//        ExtractTests("digits");
+        ExtractTests("digits");
     }
 
-    public static void ExtractInstance(String target) {
-        String initDirPath = "../IntroClassJava/dataset/" + target;
+    public static void ExtractInstance(String project) {
+        String initDirPath = "../IntroClassJava/dataset/" + project;
         File dir = new File(initDirPath);
 
-        new File("./ProcessedInstances/" + target).mkdir();
+        new File("./ProcessedInstances/" + project).mkdir();
 
         for (File repo : Objects.requireNonNull(dir.listFiles())) {
             for (File version : Objects.requireNonNull(repo.listFiles())) {
@@ -38,13 +38,13 @@ public class Extractor {
                         File targetFile = new File(targetPath);
                         String outPath;
                         if (!f.getName().contains("_")) {
-                            outPath = "./ProcessedInstances/" + target + "/" + "REF_" + f.getName();
+                            outPath = "./ProcessedInstances/" + project + "/" + "REF_" + f.getName();
                         } else {
-                            outPath = "./ProcessedInstances/" + target + "/" + f.getName();
+                            outPath = "./ProcessedInstances/" + project + "/" + f.getName();
                         }
                         File outFile = new File(outPath);
                         try {
-                            BufferedWriter bf = writeFile(targetFile, outFile, target); // from target to out
+                            BufferedWriter bf = writeFile(targetFile, outFile, project); // from target to out
                             bf.close();
                         } catch (IOException e) {
                             System.out.println("Error writing to file");
@@ -56,7 +56,7 @@ public class Extractor {
         }
     }
 
-    private static BufferedWriter writeFile(File targetFile, File outFile, String target) throws IOException {
+    private static BufferedWriter writeFile(File targetFile, File outFile, String project) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(targetFile));
         String fileContent = "";
         String line;
@@ -64,7 +64,16 @@ public class Extractor {
         while ((line = br.readLine()) != null) {
             if (line.contains("public class")) {
                 fileContent += "public class ClassDef {";
-            } else {
+            } else if (line.contains(project)) {
+                fileContent += "\tClassDef mainClass = new ClassDef();";
+            } else if (line.contains("throws Exception") && !line.contains("public static void main")) {
+                fileContent += line.replace("throws Exception", "");
+                fileContent += "\n";
+                fileContent += "\tString name = " + "\"" + outFile.getName().replace(".java","") + "\";";
+            } else if (line.contains("throws Exception") && line.contains("public static void main")) {
+                fileContent += line.replace("throws Exception", "");
+            }
+            else {
                 fileContent += line;
             }
             fileContent += "\n";
@@ -128,8 +137,8 @@ public class Extractor {
         br.readLine(); // to omit package name
 
         BufferedWriter bf = new BufferedWriter(new FileWriter(outFile));
-        String pk = "package aprs_introclass;\n";
-        bf.write(pk);
+        bf.write("package aprs_introclass;\n");
+        bf.write("import aprs_introclass.ClassDef;\n");
 
         // recursive call
         recursiveTestSplit(projectName, outPath, outFile, bf, br, var, lineCount);
@@ -147,9 +156,12 @@ public class Extractor {
                     bf.write("\tpublic static void main(String[] args) {\n");
                 } else if (line.contains(projectName)) {
                     bf.write("\tClassDef mainClass = new ClassDef();\n");
-                } else if (line.contains("assertEquals") || line.contains("String out")) {
+                } else if (line.contains("exec")) {
+                    bf.write("\tmainClass.exec();\n");
+                } else if (line.contains("assertEquals") || line.contains("String out") || line.contains("import")) {
                     curLine++;
                     continue;
+                // recursive call - read new file
                 } else if (line.contains("}")) {
                     bf.write(line + "\n}");
                     bf.close();
@@ -163,6 +175,7 @@ public class Extractor {
                     File outFileInner = new File(outPath + "/" + projectName + var + ".java");
                     BufferedWriter bf_inner = new BufferedWriter(new FileWriter(outFileInner));
                     bf_inner.write("package aprs_introclass;\n");
+                    bf_inner.write("import aprs_introclass.ClassDef;\n");
                     bf_inner.write("public class MainInstance {\n");
                     recursiveTestSplit(projectName, outPath, outFileInner, bf_inner, br, var+1, lineCount);
                 } else {

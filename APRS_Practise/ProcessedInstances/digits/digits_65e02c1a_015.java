@@ -44,8 +44,8 @@ public class ClassDef {
     public java.util.Scanner scanner;
     public String output = "";
 
-    public static void main (String[]args) throws Exception {
-        digits_65e02c1a_015 mainClass = new digits_65e02c1a_015 ();
+    public static void main (String[]args)  {
+	ClassDef mainClass = new ClassDef();
         String output;
         if (args.length > 0) {
             mainClass.scanner = new java.util.Scanner (args[0]);
@@ -56,7 +56,8 @@ public class ClassDef {
         System.out.println (mainClass.output);
     }
 
-    public void exec () throws Exception {
+    public void exec ()  {
+	String name = "digits_65e02c1a_015";
         IntObj d1 = new IntObj (), d2 = new IntObj (), d3 = new IntObj (), d4 =
             new IntObj (), d5 = new IntObj (), d6 = new IntObj (), d7 =
             new IntObj (), d8 = new IntObj (), d9 = new IntObj (), d10 =

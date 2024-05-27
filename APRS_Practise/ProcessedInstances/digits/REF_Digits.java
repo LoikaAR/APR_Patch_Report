@@ -9,7 +9,7 @@ public class ClassDef {
 	public java.util.Scanner scanner;
 	public String output = "";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args)  {
 		Digits mainClass = new Digits();
 		String output;
 		if(args.length > 0) {
@@ -21,7 +21,8 @@ public class ClassDef {
 		System.out.println(mainClass.output);
 	}
 
-    public void exec () throws Exception {
+    public void exec ()  {
+	String name = "REF_Digits";
         IntObj j = new IntObj(), k = new IntObj();
         output += (String.format("\nEnter an integer > "));
         j.value = scanner.nextInt();
