@@ -35,15 +35,14 @@ public class Profiler {
 
                 try {
                     File file;
-                    file = new File("./json_out/output_v1.json");
+                    file = new File("./json_out/" + outName + "_test_0.json");
+                    int idx = 0;
                     if (file.exists()) {
-                        file = new File("./json_out/output_v2.json");
-                        if (file.exists()) {
-                            file.delete();
-                            file = new File("./json_out/output_v1.json");
+                        while (file.exists()) {
+                            idx++;
+                            file = new File("./json_out/" + outName + "_test_" + idx + ".json");
                         }
                     }
-
                     BufferedWriter bf = new BufferedWriter(new FileWriter(file));
                     System.out.println("writing to output");
                     bf.write("{\"Before\": {");

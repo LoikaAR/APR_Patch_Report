@@ -68,6 +68,11 @@ public class Instrumentation_BB {
         nFieldAccesses++;
     }
 
+    @After(marker = BasicBlockMarker.class, scope = "aprs_introclass.ClassDef.exec", guard=BasicBlockGuardZero.class)
+    static void getName(DynamicContext dc) {
+        System.out.println("RETRIEVED NAME " + dc.getLocalVariableValue(1, String.class).toString());
+        Profiler_BB.outName = dc.getLocalVariableValue(1, String.class);
+    }
 //    ========================================== Local Variables Tracing ===============================================
     // for basic blocks with global scope
     @After(marker = BasicBlockMarker.class, scope = "aprs_introclass.ClassDef.exec", guard=BasicBlockGuard.class)

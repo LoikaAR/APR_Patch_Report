@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Profiler_BB {
+    public static String outName = "";
+
     public static List<Integer> allocationsTrace = new ArrayList<Integer>();
     public static List<Integer> fieldAccessTrace = new ArrayList<Integer>();
     public static List<Integer> invocationsTrace = new ArrayList<Integer>();
@@ -39,14 +41,15 @@ public class Profiler_BB {
                 System.out.println("field access trace per basic block: " + fieldAccessTrace);
                 System.out.println("invocations trace per basic block: " + invocationsTrace);
 
+                System.out.println("BB OUT NAME IS " + outName);
                 try {
                     File file;
-                    file = new File("./json_out/BB_output_v1.json");
+                    file = new File("./json_out/" + outName + "_test0_BB.json");
+                    int idx = 0;
                     if (file.exists()) {
-                        file = new File("./json_out/BB_output_v2.json");
-                        if (file.exists()) {
-                            file.delete();
-                            file = new File("./json_out/BB_output_v1.json");
+                        while (file.exists()) {
+                            idx++;
+                            file = new File("./json_out/" + outName + "_test_" + idx + "_BB.json");
                         }
                     }
 
