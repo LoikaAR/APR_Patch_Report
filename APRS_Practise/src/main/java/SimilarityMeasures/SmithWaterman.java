@@ -292,26 +292,24 @@ public class SmithWaterman {
     }
 
     public static void main(String[] args) {
-
-        try {
-            JsonHandler.HandleJsonTraces(false);
-            JsonHandler.HandleJsonTraces(true);
-        } catch (IOException e) {
-            System.out.println("Error writing to file");
-            System.out.println(e.getMessage());
-        }
-
-        SmithWaterman sw = new SmithWaterman(JsonHandler.outJson.get("output_v1"),
-                JsonHandler.outJson.get("output_v2"));
-//        SmithWaterman sw = new SmithWaterman("hello", "hello");
-
-        System.out.println("\nThe alignments with the maximum score are: \n");
-        sw.printAlignments();
-
-        System.out.println("\nThe maximum alignment score is: " +
-                sw.getAlignmentScore());
+//        try {
+//            JsonHandler.HandleJsonTraces(false);
+//            JsonHandler.HandleJsonTraces(true);
+//        } catch (IOException e) {
+//            System.out.println("Error writing to file");
+//            System.out.println(e.getMessage());
+//        }
+//
+//        SmithWaterman sw = new SmithWaterman(JsonHandler.outJson.get("output_v1"),
+//                JsonHandler.outJson.get("output_v2"));
+////        SmithWaterman sw = new SmithWaterman("hello", "hello");
+//
+//        System.out.println("\nThe alignments with the maximum score are: \n");
+//        sw.printAlignments();
+//
+//        System.out.println("\nThe maximum alignment score is: " +
+//                sw.getAlignmentScore());
 
         // number of max matching chars given the penalties for spaces++
-
     }
 }

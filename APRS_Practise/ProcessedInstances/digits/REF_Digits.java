@@ -10,7 +10,7 @@ public class ClassDef {
 	public String output = "";
 
 	public static void main(String[] args)  {
-		Digits mainClass = new Digits();
+	ClassDef mainClass = new ClassDef();
 		String output;
 		if(args.length > 0) {
 			mainClass.scanner = new java.util.Scanner(args[0]);

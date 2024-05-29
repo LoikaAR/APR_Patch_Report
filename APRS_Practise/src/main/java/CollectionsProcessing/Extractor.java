@@ -64,7 +64,7 @@ public class Extractor {
         while ((line = br.readLine()) != null) {
             if (line.contains("public class")) {
                 fileContent += "public class ClassDef {";
-            } else if (line.contains(project)) {
+            } else if (line.contains(project) || line.contains("mainClass = new")) {
                 fileContent += "\tClassDef mainClass = new ClassDef();";
             } else if (line.contains("throws Exception") && !line.contains("public static void main")) {
                 fileContent += line.replace("throws Exception", "");

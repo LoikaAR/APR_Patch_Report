@@ -44,7 +44,7 @@ public class Profiler_BB {
                 System.out.println("BB OUT NAME IS " + outName);
                 try {
                     File file;
-                    file = new File("./json_out/" + outName + "_test0_BB.json");
+                    file = new File("./json_out/" + outName + "_test_0_BB.json");
                     int idx = 0;
                     if (file.exists()) {
                         while (file.exists()) {

@@ -33,18 +33,18 @@ public class LevenshteinDistance {
     }
 
     public static void main(String[] args) {
-        try {
-            JsonHandler.HandleJsonTraces(false);
-            JsonHandler.HandleJsonTraces(true);
-        } catch (IOException e) {
-            System.out.println("Error writing to file");
-            System.out.println(e.getMessage());
-        }
-
-        int score = levenshteinTwoMatrixRows(JsonHandler.outJson.get("output_v1"),
-                JsonHandler.outJson.get("output_v2"));
-//        int score = levenshteinTwoMatrixRows("hello", "helo");
-
-        System.out.println("Levenshtein distance score: " + score);
+//        try {
+//            JsonHandler.HandleJsonTraces(false);
+//            JsonHandler.HandleJsonTraces(true);
+//        } catch (IOException e) {
+//            System.out.println("Error writing to file");
+//            System.out.println(e.getMessage());
+//        }
+//
+//        int score = levenshteinTwoMatrixRows(JsonHandler.outJson.get("output_v1"),
+//                JsonHandler.outJson.get("output_v2"));
+////        int score = levenshteinTwoMatrixRows("hello", "helo");
+//
+//        System.out.println("Levenshtein distance score: " + score);
     }
 }

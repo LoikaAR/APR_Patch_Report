@@ -3,81 +3,140 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 
+import SimilarityMeasures.LCS;
+import SimilarityMeasures.LevenshteinDistance;
+import SimilarityMeasures.SmithWaterman;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class JsonHandler {
+    public static int nTests = 9; // +1
     public static int CODE_MAX = 9999;
     public static int curCode = 0;
     public static HashMap<String, String> outJson = new HashMap<String, String>();
     public static HashMap<String, String> encodingMap = new HashMap<String, String>();
 
     public static void main(String[] args) throws IOException {
-        HandleJsonTraces(false);
-        HandleJsonTraces(true);
-
-        // remove "-" from end of each sequence
-        for (Map.Entry<String, String> entry : encodingMap.entrySet()) {
-            String newVal = entry.getValue().substring(0, entry.getValue().length()-3);
-            entry.setValue(newVal);
-        }
-
-        for (Map.Entry<String, String> entry : outJson.entrySet()) {
-            String newVal = entry.getValue().substring(0, entry.getValue().length()-3);
-            entry.setValue(newVal);
-        }
-
+        HandleJsonTraces("digits");
 
         System.out.println(outJson);
         System.out.println(encodingMap);
-    }
-    public static void HandleJsonTraces(boolean BB) throws IOException {
-        String path_v1;
-        path_v1 = BB ? "../DiSL_Practice/json_out/output_v1.json" : "../DiSL_Practice/json_out/BB_output_v1.json";
 
-        String mapKeyV1;
-        mapKeyV1 = BB ? "output_v1" : "BB_output_v1";
+        for (Map.Entry<String, String> entry : outJson.entrySet()) {
+            int testIdx = 0;
+            while (testIdx <= nTests) {
+                if (entry.getKey().contains("test_" + testIdx)) {
+                    System.out.println("Similarity measures " + entry.getKey() + " <------> " + "REF:");
+                    int LD_score_BB = 0, LCS_score_BB = 0, LD_score = 0, LCS_score = 0;
+                    double SW_score_BB = 0, SW_score = 0;
+                    if (entry.getKey().contains("BB")) {
+                        LD_score_BB = LevenshteinDistance.levenshteinTwoMatrixRows(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx +"_BB"));
+                        LCS_score_BB = LCS.longestCommonSubsequence(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx + "_BB"));
+                        SmithWaterman sw = new SmithWaterman(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx +"_BB"));
+                        SW_score_BB = sw.getAlignmentScore();
 
-        ObjectMapper mapper_v1 = new ObjectMapper();
-        JsonNode jsonNode_v1 = mapper_v1.readTree(new File(path_v1));
+                        System.out.println("Levenshtein Distance (BB): " + LD_score_BB);
+                        System.out.println("Longest Common Subsequence (BB): " + LCS_score_BB);
+                        System.out.println("Smith-Waterman Score (BB): " + SW_score_BB);
+                        System.out.println("==================================================");
 
-        outJson.put(mapKeyV1, "");
-        traverse(jsonNode_v1, mapKeyV1);
+                    } else {
+                        LD_score = LevenshteinDistance.levenshteinTwoMatrixRows(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx));
+                        LCS_score = LCS.longestCommonSubsequence(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx));
+                        SmithWaterman sw = new SmithWaterman(entry.getValue(),
+                                outJson.get("ref_output_test_" + testIdx));
+                        SW_score = sw.getAlignmentScore();
 
+                        System.out.println("Levenshtein Distance: " + LD_score);
+                        System.out.println("Longest Common Subsequence: " + LCS_score);
+                        System.out.println("Smith-Waterman Score: " + SW_score);
+                        System.out.println("==================================================");
 
-        String path_v2;
-        path_v2 = BB ? "../DiSL_Practice/json_out/output_v2.json" : "../DiSL_Practice/json_out/BB_output_v2.json";
+                    }
 
-        ObjectMapper mapper_v2 = new ObjectMapper();
-        JsonNode jsonNode_v2 = mapper_v2.readTree(new File(path_v2));
+                    System.out.println("Averaged:");
+                    System.out.println("Levenshtein Distance: " + LD_score+LD_score_BB/2);
+                    System.out.println("Longest Common Subsequence: " + LCS_score+LCS_score_BB/2);
+                    System.out.println("Smith-Waterman Score: " + SW_score+SW_score_BB/2);
+                    System.out.println("==================================================");
 
-        String mapKeyV2;
-        mapKeyV2 = BB ? "output_v2" : "BB_output_v2";
-
-        outJson.put(mapKeyV2, "");
-        traverse(jsonNode_v2, mapKeyV2);
-
-
-        // beautifying the json - not obligatory
-        String json = mapper_v1.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode_v1);
-
-        try {
-            File output_file = new File("../DiSL_Practice/json_out/formatted_output_v1.json");
-            BufferedWriter bf = new BufferedWriter(new FileWriter(output_file));
-            bf.write(json);
-            bf.close();
-
-            System.out.println("Successfully wrote to file " + output_file.getName());
-        } catch (IOException e) {
-            System.out.println("Error writing to file");
-            System.out.println(e.getMessage());
+                }
+                testIdx++;
+            }
         }
     }
+    public static void HandleJsonTraces(String project) throws IOException {
+        String path_ref = "../DiSL_Practice/json_out/REF_"
+                + project.substring(0, 1).toUpperCase() + project.substring(1);
+
+        processTests(path_ref, "ref");                     // populate outJson with encoded DiSL data
+
+        String pathToTests = "./ProcessedInstances/" + project;
+        String pathToJson = "../DiSL_Practice/json_out/";       // + project, separate in folders
+        ArrayList<String> fileNames = new ArrayList<>();
+
+        getFileNames(pathToTests, fileNames);                   // get names of all project versions
+
+        for (String testName : fileNames) {
+            if (!testName.contains("REF")) {
+                String path = pathToJson + testName;
+                processTests(path, testName);
+            }
+        }
+    }
+
+    public static void processTests(String path, String name) throws IOException {
+        int curTestIdx = 0;
+        String mapKeyRef;
+        String mapKeyRefBB;
+        while (curTestIdx <= nTests) {
+            String curTest = path.replace(".java", "") + "_test_" + curTestIdx + ".json";
+            String curTestBB = path.replace(".java", "") + "_test_" + curTestIdx + "_BB.json";
+            mapKeyRef = name.replace(".java", "") + "_output_test_" + curTestIdx;
+            mapKeyRefBB = name.replace(".java", "") + "_output_test_" + curTestIdx + "_BB";
+
+            ObjectMapper mapperRef = new ObjectMapper();
+            JsonNode jsonNodeRef = mapperRef.readTree(new File(curTest));
+
+            ObjectMapper mapperRefBB = new ObjectMapper();
+            JsonNode jsonNodeRefBB = mapperRefBB.readTree(new File(curTestBB));
+
+            outJson.put(mapKeyRef, "");
+            traverse(jsonNodeRef, mapKeyRef);
+
+            outJson.put(mapKeyRefBB, "");
+            traverse(jsonNodeRefBB, mapKeyRefBB);
+
+            curTestIdx++;
+        }
+    }
+
+    public static void getFileNames(String path, ArrayList<String> fileNames) {
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        if(listOfFiles != null) {
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    fileNames.add(file.getName());
+                    System.out.println("File " + file.getName());
+                }
+            }
+        }
+    }
+
+
+
 
     /*
     * Recursive function to do some operation for each element in a json object
