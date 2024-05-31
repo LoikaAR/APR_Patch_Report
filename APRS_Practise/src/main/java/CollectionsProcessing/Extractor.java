@@ -13,21 +13,32 @@ import java.io.BufferedReader;
 import java.util.stream.Stream;
 
 public class Extractor {
+    public static String[] projects = {"digits", "checksum", "grade", "median", "smallest", "syllables"};
     private static long curLine = 1;
-    public static void main(String[] args) throws IOException {
+    private static final int sampleLimit = 5;
 
-        ExtractInstance("digits");
-        ExtractTests("digits");
+    public static void main(String[] args) throws IOException {
+        for (String project : projects) {
+            ExtractInstance(project);
+            ExtractTests(project);
+        }
+//        ExtractInstance("digits");
+//        ExtractTests("digits");
     }
 
     public static void ExtractInstance(String project) {
         String initDirPath = "../IntroClassJava/dataset/" + project;
         File dir = new File(initDirPath);
-
-        new File("./ProcessedInstances/" + project).mkdir();
-
-        for (File repo : Objects.requireNonNull(dir.listFiles())) {
-            for (File version : Objects.requireNonNull(repo.listFiles())) {
+        if (dir.exists() && dir.isDirectory()) {
+            dir.delete();
+        } else {
+            new File("./ProcessedInstances/" + project).mkdir();
+        }
+        int sampleIdx = 0;
+        System.out.println(project + ": ");
+        for (File repo : Objects.requireNonNull(dir.listFiles())) {             // dataset/
+            System.out.println(repo);
+            for (File version : Objects.requireNonNull(repo.listFiles())) {     // dataset/project_name/
                 String path = initDirPath + "/"
                         + repo.getName() + "/"
                         + version.getName() + "/src/main/java/introclassJava";
@@ -52,6 +63,10 @@ public class Extractor {
                         }
                     }
                 }
+            }
+            sampleIdx++;
+            if (sampleIdx >= sampleLimit) {
+                return;
             }
         }
     }
@@ -111,28 +126,41 @@ public class Extractor {
                 System.out.println(e.getMessage());
             }
 
+            String targetPath = testPath + "/" + test.getName();
+            File targetFile = new File(targetPath);
+
+            String outDirPath =  "./IntroClassTests/" + projectName;
+            new File(outDirPath).mkdir();
+
+            String outPath;
             if (test.getName().contains("White")) {
-                String targetPath = testPath + "/" + test.getName();
-                File targetFile = new File(targetPath);
-
-                String outDirPath =  "./IntroClassTests/" + projectName;
-                new File(outDirPath).mkdir();
-
-                String outPath = outDirPath + "/" + projectName + "0.java";
+                outPath = outDirPath + "/" + projectName + "_white_0.java";
                 File outFile = new File(outPath);
                 int var = 1;
                 try {
-                    BufferedWriter bf = splitTests(projectName, targetFile, outFile, outDirPath, var, lineCount);
+                    BufferedWriter bf = splitTests(projectName, targetFile, outFile, outDirPath, var, lineCount, false);
+                } catch (IOException e) {
+                    System.out.println("Error writing to file");
+                    System.out.println(e.getMessage());
+                }
+            } else {
+                outPath = outDirPath + "/" + projectName + "_black_0.java";
+                File outFile = new File(outPath);
+                int var = 1;
+                try {
+                    BufferedWriter bf = splitTests(projectName, targetFile, outFile, outDirPath, var, lineCount, true);
                 } catch (IOException e) {
                     System.out.println("Error writing to file");
                     System.out.println(e.getMessage());
                 }
             }
+
+
         }
     }
 
-    private static BufferedWriter splitTests(String projectName, File targetFile,
-                                             File outFile, String outPath, int var, long lineCount) throws IOException {
+    private static BufferedWriter splitTests(String projectName, File targetFile, File outFile, String outPath,
+                                             int var, long lineCount, boolean black) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(targetFile));
         br.readLine(); // to omit package name
 
@@ -141,12 +169,12 @@ public class Extractor {
         bf.write("import aprs_introclass.ClassDef;\n");
 
         // recursive call
-        recursiveTestSplit(projectName, outPath, outFile, bf, br, var, lineCount);
+        recursiveTestSplit(projectName, outPath, outFile, bf, br, var, lineCount, black);
         return bf;
     }
 
-    private static void recursiveTestSplit(String projectName, String outPath, File outFile,
-                                           BufferedWriter bf, BufferedReader br, int var, long lineCount) {
+    private static void recursiveTestSplit(String projectName, String outPath, File outFile, BufferedWriter bf,
+                                           BufferedReader br, int var, long lineCount, boolean black) {
         String line;
         try {
             while ((line = br.readLine()) != null) {
@@ -172,12 +200,16 @@ public class Extractor {
                     }
                     br.reset();
 
-                    File outFileInner = new File(outPath + "/" + projectName + var + ".java");
+                    String outFileName =  outPath + "/" + projectName;
+                    outFileName += black ? "_black_" : "_white_";
+                    outFileName += var + ".java";
+                    File outFileInner = new File(outFileName);
+
                     BufferedWriter bf_inner = new BufferedWriter(new FileWriter(outFileInner));
                     bf_inner.write("package aprs_introclass;\n");
                     bf_inner.write("import aprs_introclass.ClassDef;\n");
                     bf_inner.write("public class MainInstance {\n");
-                    recursiveTestSplit(projectName, outPath, outFileInner, bf_inner, br, var+1, lineCount);
+                    recursiveTestSplit(projectName, outPath, outFileInner, bf_inner, br, var+1, lineCount, black);
                 } else {
                     bf.write(line + "\n");
                 }

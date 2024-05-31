@@ -1,4 +1,4 @@
-CollectionsProcessing/ListProcessor.class
 SimilarityMeasures/LevenshteinDistance.class
 CollectionsProcessing/JsonHandler.class
+CollectionsProcessing/ListProcessor.class
 SimilarityMeasures/LCS.class

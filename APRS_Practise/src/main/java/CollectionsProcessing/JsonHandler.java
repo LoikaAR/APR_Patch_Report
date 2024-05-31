@@ -1,7 +1,5 @@
 package CollectionsProcessing;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class JsonHandler {
+    public static String[] projects = {"digits", "checksum", "grade", "median", "smallest", "syllables"};
     public static int nTests = 9; // +1
     public static int CODE_MAX = 9999;
     public static int curCode = 0;
@@ -23,19 +22,26 @@ public class JsonHandler {
     public static HashMap<String, String> encodingMap = new HashMap<String, String>();
 
     public static void main(String[] args) throws IOException {
-        HandleJsonTraces("digits");
+        for (String project : projects) {
+            HandleJsonTraces(project);
+        }
 
         System.out.println(outJson);
         System.out.println(encodingMap);
 
-        for (Map.Entry<String, String> entry : outJson.entrySet()) {
-            int testIdx = 0;
-            while (testIdx <= nTests) {
+        HashMap<String, HashMap<String, Integer>> scores = new HashMap<String, HashMap<String, Integer>>(); // project_version : test_num : score (LD, LCS, SW)
+        int testIdx = 0;
+        while (testIdx <= nTests) {
+            for (Map.Entry<String, String> entry : outJson.entrySet()) {
                 if (entry.getKey().contains("test_" + testIdx)) {
-                    System.out.println("Similarity measures " + entry.getKey() + " <------> " + "REF:");
                     int LD_score_BB = 0, LCS_score_BB = 0, LD_score = 0, LCS_score = 0;
                     double SW_score_BB = 0, SW_score = 0;
+
                     if (entry.getKey().contains("BB")) {
+                        int iend = entry.getKey().indexOf("_output");
+                        String versionName = entry.getKey().substring(0, iend);
+                        scores.computeIfAbsent(versionName, k -> new HashMap<>());
+
                         LD_score_BB = LevenshteinDistance.levenshteinTwoMatrixRows(entry.getValue(),
                                 outJson.get("ref_output_test_" + testIdx +"_BB"));
                         LCS_score_BB = LCS.longestCommonSubsequence(entry.getValue(),
@@ -44,43 +50,46 @@ public class JsonHandler {
                                 outJson.get("ref_output_test_" + testIdx +"_BB"));
                         SW_score_BB = sw.getAlignmentScore();
 
-                        System.out.println("Levenshtein Distance (BB): " + LD_score_BB);
-                        System.out.println("Longest Common Subsequence (BB): " + LCS_score_BB);
-                        System.out.println("Smith-Waterman Score (BB): " + SW_score_BB);
-                        System.out.println("==================================================");
-
-                    } else {
-                        LD_score = LevenshteinDistance.levenshteinTwoMatrixRows(entry.getValue(),
-                                outJson.get("ref_output_test_" + testIdx));
-                        LCS_score = LCS.longestCommonSubsequence(entry.getValue(),
-                                outJson.get("ref_output_test_" + testIdx));
-                        SmithWaterman sw = new SmithWaterman(entry.getValue(),
-                                outJson.get("ref_output_test_" + testIdx));
-                        SW_score = sw.getAlignmentScore();
-
-                        System.out.println("Levenshtein Distance: " + LD_score);
-                        System.out.println("Longest Common Subsequence: " + LCS_score);
-                        System.out.println("Smith-Waterman Score: " + SW_score);
-                        System.out.println("==================================================");
-
+                        scores.get(versionName).put("test_" + testIdx + "_LD", LD_score_BB);
+                        scores.get(versionName).put("test_" + testIdx + "_LCS", LCS_score_BB);
+                        scores.get(versionName).put("test_" + testIdx + "_SW", (int)SW_score_BB);
                     }
-
-                    System.out.println("Averaged:");
-                    System.out.println("Levenshtein Distance: " + LD_score+LD_score_BB/2);
-                    System.out.println("Longest Common Subsequence: " + LCS_score+LCS_score_BB/2);
-                    System.out.println("Smith-Waterman Score: " + SW_score+SW_score_BB/2);
-                    System.out.println("==================================================");
-
                 }
-                testIdx++;
             }
+            testIdx++;
         }
+
+        for (String version : scores.keySet()) {
+            HashMap<String, Integer> score = scores.get(version);
+            int curTest = 0;
+            int avgLD = 0, avgLCS = 0, avgSW = 0;
+            for (String testName : score.keySet()) {
+                if (testName.contains("LD")) {
+                    avgLD += score.get(testName);
+                } else if (testName.contains("LCS")) {
+                    avgLCS += score.get(testName);
+                } else if (testName.contains("SW")) {
+                    avgSW += score.get(testName);
+                }
+                curTest++;
+            }
+            avgLD = avgLD/(nTests+1);
+            avgLCS = avgLCS/(nTests+1);
+            avgSW = avgSW/(nTests+1);
+            System.out.println(version + " <--------------> " + "ref:");
+            System.out.println("Average Levenshtein Distance: " + avgLD);
+            System.out.println("Average Longest Common Subsequence: " + avgLCS);
+            System.out.println("Average Smith-Waterman Score: " + avgSW);
+            System.out.println("==================================================");
+
+        }
+        System.out.println(scores);
     }
     public static void HandleJsonTraces(String project) throws IOException {
         String path_ref = "../DiSL_Practice/json_out/REF_"
                 + project.substring(0, 1).toUpperCase() + project.substring(1);
 
-        processTests(path_ref, "ref");                     // populate outJson with encoded DiSL data
+        processTests(path_ref, "ref");                    // populate outJson with encoded DiSL data
 
         String pathToTests = "./ProcessedInstances/" + project;
         String pathToJson = "../DiSL_Practice/json_out/";       // + project, separate in folders

@@ -20,7 +20,6 @@
             <url>https://mvnrepository.com/</url>
         </repository>
     </repositories>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -58,17 +57,14 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.17.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>exec-maven-plugin</artifactId>-->
-<!--                <version>1.4.0</version>-->
-<!--                <configuration>-->
-<!--                    <mainClass>src.main.java.CollectionsProcessing.JsonHandler</mainClass>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
