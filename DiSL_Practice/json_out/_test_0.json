@@ -1,0 +1,2 @@
+{"Before": {"Vars": {}},
+"After": {"Vars": {},"Methods_invoked": {"main": { "descriptor": "([Ljava/lang/String;)V", "#Basic_blocks": "1" }},"#Bytecodes_executed": "0", "#Objects_allocated": "null", "#Methods_invoked": "null", "Output": "null"}}

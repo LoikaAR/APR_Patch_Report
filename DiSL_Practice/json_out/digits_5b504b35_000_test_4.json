@@ -1,0 +1,2 @@
+{"Before": {"Vars": {"var_7": "not_declared","var_8": "not_declared"}},
+"After": {"Vars": {},"Methods_invoked": {"main": { "descriptor": "([Ljava/lang/String;)V", "#Basic_blocks": "1" }},"#Bytecodes_executed": "15", "#Objects_allocated": "2", "#Methods_invoked": "3", "Output": "null"}}
