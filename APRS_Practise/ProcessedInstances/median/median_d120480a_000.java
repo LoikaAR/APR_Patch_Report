@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -58,9 +78,9 @@ public class ClassDef {
 
     public void exec ()  {
 	String name = "median_d120480a_000";
-	ClassDef mainClass = new ClassDef();
+        IntObj a = new IntObj (), b = new IntObj (), c = new IntObj (), median =
             new IntObj (), temp = new IntObj ();
-	ClassDef mainClass = new ClassDef();
+        median.value = 0;
         temp.value = 0;
         output +=
             (String.format ("Please enter 3 numbers separated by spaces > "));
@@ -73,13 +93,13 @@ public class ClassDef {
             a.value = temp.value;
         }
         if (a.value < c.value) {
-	ClassDef mainClass = new ClassDef();
+            median.value = b.value;
         } else if (b.value > c.value) {
-	ClassDef mainClass = new ClassDef();
+            median.value = a.value;
         } else {
-	ClassDef mainClass = new ClassDef();
+            median.value = c.value;
         }
-	ClassDef mainClass = new ClassDef();
+        output += (String.format ("%d is the median\n", median.value));
         if (true)
             return;;
     }

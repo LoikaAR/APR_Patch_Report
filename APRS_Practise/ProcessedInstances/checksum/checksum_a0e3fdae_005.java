@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -58,7 +78,7 @@ public class ClassDef {
 
     public void exec ()  {
 	String name = "checksum_a0e3fdae_005";
-	ClassDef mainClass = new ClassDef();
+        IntObj checksum = new IntObj (), integer_value = new IntObj (), sum =
             new IntObj (0);
         char[] value = new char[1000];
         output +=
@@ -71,8 +91,8 @@ public class ClassDef {
             integer_value.value = value[i.value];
             sum.value = sum.value + integer_value.value;
         }
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
+        checksum.value = (sum.value % 64) + ' ';
+        output += (String.format ("Check sum is %c\n", checksum.value));
         if (true)
             return;;
     }

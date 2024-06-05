@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -59,7 +79,7 @@ public class ClassDef {
     public void exec ()  {
 	String name = "grade_5b504b35_000";
         FloatObj a = new FloatObj (), b = new FloatObj (), c =
-	ClassDef mainClass = new ClassDef();
+            new FloatObj (), d = new FloatObj (), grade = new FloatObj ();
         output += (String.format ("Enter thresholds for A, B, C, D\n"));
         output += (String.format ("in that order, decreasing percentages > "));
         a.value = scanner.nextFloat ();
@@ -68,17 +88,17 @@ public class ClassDef {
         d.value = scanner.nextFloat ();
         output +=
             (String.format ("Thank you. Now enter student score (percent) >"));
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
+        grade.value = scanner.nextFloat ();
+        if (grade.value >= a.value) {
+            output += (String.format ("Student has an A grade\n"));
+        } else if (grade.value >= b.value) {
+            output += (String.format ("Student has an B grade\n"));
+        } else if (grade.value >= c.value) {
+            output += (String.format ("Student has an C grade\n"));
+        } else if (grade.value >= d.value) {
+            output += (String.format ("Student has an D grade\n"));
         } else {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an F grade\n"));
         }
         if (true)
             return;;

@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -60,12 +80,12 @@ public class ClassDef {
 	String name = "checksum_e9c74e27_000";
         CharObj orig = new CharObj ();
         IntObj code = new IntObj (), accum = new IntObj ();
-	ClassDef mainClass = new ClassDef();
+        CharObj checksum = new CharObj ();
         output +=
             (String.format
              ("Enter an abitrarily long string, ending with carriage return > "));
         accum.value = 0;
-	ClassDef mainClass = new ClassDef();
+        checksum.value = 0;
         code.value = 0;
         orig.value = ' ';
         do {
@@ -77,8 +97,8 @@ public class ClassDef {
             code.value = (int) orig.value;
             accum.value += code.value;
         } while (orig.value != '\n');
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
+        checksum.value = (char) ((accum.value % 64) + 22);
+        output += (String.format ("Check sum is %c\n", checksum.value));
         if (true)
             return;;
     }

@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -59,15 +79,15 @@ public class ClassDef {
     public void exec ()  {
 	String name = "digits_88394fc0_003";
         IntObj n = new IntObj ();
-	ClassDef mainClass = new ClassDef();
+        IntObj digits = new IntObj ();
         output += (String.format ("\nEnter an integer > "));
         n.value = scanner.nextInt ();
         output += (String.format ("\n"));
         n.value = Math.abs (n.value);
-	ClassDef mainClass = new ClassDef();
+        digits.value = 1;
         while (n.value > 0) {
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
+            digits.value = n.value % 10;
+            output += (String.format ("%d\n", digits.value));
             n.value = n.value / 10;
         }
         output += (String.format ("That's all, have a nice day!\n"));

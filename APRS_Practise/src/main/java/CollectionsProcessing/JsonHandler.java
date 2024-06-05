@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+/*
+* Class to process the program traces produced by disl*/
+
 public class JsonHandler {
     public static String[] projects = {"digits", "checksum", "grade", "median", "smallest", "syllables"};
     public static int nTests = 9; // +1

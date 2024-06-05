@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -37,6 +53,11 @@ class CharObj {
     public CharObj () {
     } public CharObj (char i) {
         value = i;
+    }
+    @Override
+    public String toString() {
+    	int r = this.value;
+	return String.valueOf(r);
     }
 }
 
@@ -59,22 +80,22 @@ public class ClassDef {
     public void exec ()  {
 	String name = "checksum_08c7ea4a_006";
         char[] string = new char[1000];
-	ClassDef mainClass = new ClassDef();
+        CharObj checksumchar = new CharObj ();
         IntObj i = new IntObj (), stringlength =
-	ClassDef mainClass = new ClassDef();
+            new IntObj (), checksum_summation = new IntObj ();
         output +=
             (String.format
              ("Enter an abitrarily long string, ending with carriage return > "));
         string = scanner.next ().toCharArray ();
         stringlength.value = string.length;
-	ClassDef mainClass = new ClassDef();
+        checksum_summation.value = 0;
         for (i.value = 0; i.value < stringlength.value; i.value++) {
-	ClassDef mainClass = new ClassDef();
+            checksum_summation.value += (int) string[i.value];
         }
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
-	ClassDef mainClass = new ClassDef();
+        checksum_summation.value /= 64;
+        checksum_summation.value += (int) ' ';
+        checksumchar.value = (char) checksum_summation.value;
+        output += (String.format ("Check sum is %c\n", checksumchar.value));
         if (true)
             return;;
     }

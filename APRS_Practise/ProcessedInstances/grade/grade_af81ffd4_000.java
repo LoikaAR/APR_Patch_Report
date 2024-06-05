@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -71,19 +91,19 @@ public class ClassDef {
         if (per.value < 60) {
             output +=
                 (String.format
-	ClassDef mainClass = new ClassDef();
+                 ("Thank you. Now enter student score (percent) >Student has an B grade\n"));
         } else if (per.value >= 60 && per.value < 70) {
             output +=
                 (String.format
-	ClassDef mainClass = new ClassDef();
+                 ("Thank you. Now enter student score (percent) >Studnet has an B grade\n"));
         } else if (per.value >= 70 && per.value < 80) {
             output +=
                 (String.format
-	ClassDef mainClass = new ClassDef();
+                 ("Thank you. Now enter student score (percent) >Student has an B grade\n"));
         } else if (per.value >= 80) {
             output +=
                 (String.format
-	ClassDef mainClass = new ClassDef();
+                 ("Thank you. Now enter student score (percent) >Student ahs an B grade\n"));
         }
         if (true)
             return;;

@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -71,15 +91,15 @@ public class ClassDef {
             (String.format ("Thank you. Now enter student score (percent) >"));
         A.value = scanner.nextFloat ();
         if (A.value >= a.value) {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an A grade\n"));
         } else if (A.value < a.value && A.value >= b.value) {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an B grade\n"));
         } else if (A.value < b.value && A.value >= c.value) {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an C grade\n"));
         } else if (A.value < c.value && A.value >= d.value) {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an D grade\n"));
         } else {
-	ClassDef mainClass = new ClassDef();
+            output += (String.format ("Student has an F grade\n"));
         }
         if (true)
             return;;

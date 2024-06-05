@@ -6,6 +6,10 @@ class IntObj {
     } public IntObj (int i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class FloatObj {
@@ -14,6 +18,10 @@ class FloatObj {
     } public FloatObj (float i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class LongObj {
@@ -22,6 +30,10 @@ class LongObj {
     } public LongObj (long i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class DoubleObj {
@@ -30,6 +42,10 @@ class DoubleObj {
     } public DoubleObj (double i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return String.valueOf(this.value);
+	}
 }
 
 class CharObj {
@@ -38,6 +54,10 @@ class CharObj {
     } public CharObj (char i) {
         value = i;
     }
+    @Override
+    public String toString() {
+	return Character.toString(this.value);
+	}
 }
 
 public class ClassDef {
@@ -59,7 +79,7 @@ public class ClassDef {
     public void exec ()  {
 	String name = "median_cd2d9b5b_010";
         IntObj num1 = new IntObj (), num2 = new IntObj (), num3 =
-	ClassDef mainClass = new ClassDef();
+            new IntObj (), median = new IntObj ();
         output +=
             (String.format ("Please enter 3 numbers separated by spaces > "));
         num1.value = scanner.nextInt ();
@@ -67,14 +87,14 @@ public class ClassDef {
         num3.value = scanner.nextInt ();
         if ((num1.value < num2.value && num1.value > num3.value)
                 || (num1.value > num2.value && num1.value < num3.value)) {
-	ClassDef mainClass = new ClassDef();
+            median.value = num1.value;
         } else if ((num2.value < num1.value && num2.value > num3.value)
                    || (num2.value > num1.value && num2.value < num3.value)) {
-	ClassDef mainClass = new ClassDef();
+            median.value = num2.value;
         } else {
-	ClassDef mainClass = new ClassDef();
+            median.value = num3.value;
         }
-	ClassDef mainClass = new ClassDef();
+        output += (String.format ("%d is the median", median.value));
         if (true)
             return;;
     }
