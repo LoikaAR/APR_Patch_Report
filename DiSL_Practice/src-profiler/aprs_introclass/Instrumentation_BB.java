@@ -79,15 +79,8 @@ public class Instrumentation_BB {
     static void afterBinarySearchBB(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
         Profiler_BB.incrementBytecodeCounterGlobal(bbsc.getSize());
         HashMap<String, String> LocalVars = new HashMap<String, String>();
-//        LocalVars.put("0", dc.getLocalVariableValue(0, Object.class).toString());
-//        LocalVars.put("1", dc.getLocalVariableValue(1, Integer.class).toString());
-//        LocalVars.put("2", dc.getLocalVariableValue(2, int.class).toString());
-//        LocalVars.put("3", dc.getLocalVariableValue(3, String.class).toString());
-//        LocalVars.put("4", dc.getLocalVariableValue(4, int.class).toString());
-//        LocalVars.put("5", dc.getLocalVariableValue(5, int.class).toString());
-//        LocalVars.put("6", dc.getLocalVariableValue(6, int.class).toString());
-        LocalVars.put("7", "out_of_scope");
-//        LocalVars.put("8", "out_of_scope");
+
+        
 
         Map<String, String> LocalVarsSorted = Collections.synchronizedMap(LocalVars);
 
@@ -100,29 +93,22 @@ public class Instrumentation_BB {
     }
 
     // get all variable values after the execution of the first basic block of the instrumented method
-    @After(marker = BasicBlockMarker.class, scope = "aprs_introclass.ClassDef.exec", guard=BasicBlockGuardInner.class)
-    static void afterBinarySearchBBTwo(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
-        Profiler_BB.incrementBytecodeCounterLocal(bbsc.getSize());
-        HashMap<String, String> LocalVars = new HashMap<String, String>();
-//        LocalVars.put("0", dc.getLocalVariableValue(0, Object.class).toString());
-//        LocalVars.put("1", dc.getLocalVariableValue(1, Integer.class).toString());
-//        LocalVars.put("2", dc.getLocalVariableValue(2, int.class).toString());
-//        LocalVars.put("3", dc.getLocalVariableValue(3, String.class).toString());
-//        LocalVars.put("4", dc.getLocalVariableValue(4, int.class).toString());
-//        LocalVars.put("5", dc.getLocalVariableValue(5, int.class).toString());
-//        LocalVars.put("6", dc.getLocalVariableValue(6, int.class).toString());
-//        LocalVars.put("7", dc.getLocalVariableValue(7, int.class).toString());
-        LocalVars.put("8", "dc.getLocalVariableValue(8, String.class).toString()");
-
-        Map<String, String> LocalVarsSorted = Collections.synchronizedMap(LocalVars);
-
-        BB_Entry bbEntry = new BB_Entry();
-        bbEntry.setId(bbsc.getIndex());
-        bbEntry.setnBytecodes(bbsc.getSize());
-        bbEntry.setLocalVars(LocalVarsSorted);
-
-        Profiler_BB.BBTrace.add(bbEntry);
-    }
+//    @After(marker = BasicBlockMarker.class, scope = "aprs_introclass.ClassDef.exec", guard=BasicBlockGuardInner.class)
+//    static void afterBinarySearchBBTwo(DynamicContext dc, MethodStaticContext msc, BasicBlockStaticContext bbsc) {
+//        Profiler_BB.incrementBytecodeCounterLocal(bbsc.getSize());
+//        HashMap<String, String> LocalVars = new HashMap<String, String>();
+////        LocalVars.put("7", dc.getLocalVariableValue(7, int.class).toString());
+//        LocalVars.put("8", "dc.getLocalVariableValue(8, String.class).toString()");
+//
+//        Map<String, String> LocalVarsSorted = Collections.synchronizedMap(LocalVars);
+//
+//        BB_Entry bbEntry = new BB_Entry();
+//        bbEntry.setId(bbsc.getIndex());
+//        bbEntry.setnBytecodes(bbsc.getSize());
+//        bbEntry.setLocalVars(LocalVarsSorted);
+//
+//        Profiler_BB.BBTrace.add(bbEntry);
+//    }
 //    ==================================================================================================================
 }
 
