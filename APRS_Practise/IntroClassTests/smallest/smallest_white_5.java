@@ -4,7 +4,7 @@ public class MainInstance {
 	public static void main(String[] args) {
 	ClassDef mainClass = new ClassDef();
         String expected =
-	ClassDef mainClass = new ClassDef();
+            "Please enter 4 numbers separated by spaces > 0 is the smallest";
         mainClass.scanner = new java.util.Scanner ("0 1 1 1");
 	mainClass.exec();
     }

@@ -8,8 +8,9 @@ class IntObj {
     }
     @Override
     public String toString() {
-	return String.valueOf(this.value);
-	}
+        return String.valueOf(this.value);
+    }
+
 }
 
 class FloatObj {
@@ -20,8 +21,9 @@ class FloatObj {
     }
     @Override
     public String toString() {
-	return String.valueOf(this.value);
-	}
+        return String.valueOf(this.value);
+    }
+
 }
 
 class LongObj {
@@ -32,8 +34,9 @@ class LongObj {
     }
     @Override
     public String toString() {
-	return String.valueOf(this.value);
-	}
+        return String.valueOf(this.value);
+    }
+
 }
 
 class DoubleObj {
@@ -44,8 +47,9 @@ class DoubleObj {
     }
     @Override
     public String toString() {
-	return String.valueOf(this.value);
-	}
+        return String.valueOf(this.value);
+    }
+
 }
 
 class CharObj {
@@ -56,8 +60,13 @@ class CharObj {
     }
     @Override
     public String toString() {
-	return Character.toString(this.value);
-	}
+        if (this.value == 0) {
+            return "null";
+        } else {
+            return Character.toString(this.value);
+        }
+    }
+
 }
 
 public class ClassDef {

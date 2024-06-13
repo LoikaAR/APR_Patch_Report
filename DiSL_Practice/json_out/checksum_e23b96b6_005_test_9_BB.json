@@ -1,0 +1,10 @@
+[{"0": {"ID": "0","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_0","var_3": "0"},
+"#BytecodesExecuted":"20"}},{"1": {"ID": "1","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_0","var_3": "0"},
+"#BytecodesExecuted":"4"}},{"2": {"ID": "2","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_65","var_3": "0"},
+"#BytecodesExecuted":"9"}},{"3": {"ID": "1","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_65","var_3": "65"},
+"#BytecodesExecuted":"4"}},{"4": {"ID": "2","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_42","var_3": "65"},
+"#BytecodesExecuted":"9"}},{"5": {"ID": "1","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_42","var_3": "107"},
+"#BytecodesExecuted":"4"}},{"6": {"ID": "3","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_10","var_3": "107"},
+"#BytecodesExecuted":"4"}},{"7": {"ID": "1","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_10","var_3": "117"},
+"#BytecodesExecuted":"4"}},{"8": {"ID": "5","Vars": {"var_0": "aprs_introclass.ClassDef@5034c75a","var_1": "checksum_e23b96b6_005","var_2": "char_10","var_3": "75"},
+"#BytecodesExecuted":"25"}}]

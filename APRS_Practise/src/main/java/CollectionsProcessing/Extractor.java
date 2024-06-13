@@ -2,6 +2,7 @@ package CollectionsProcessing;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.io.File;
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
+
 
 /*
 * Class to extract class definitions and test cases from introclassJava
@@ -23,19 +26,28 @@ public class Extractor {
     public static void main(String[] args) throws IOException {
         for (String project : projects) {
             ExtractInstance(project);
+            ExtractInstanceRef(project);
             ExtractTests(project);
         }
-//        ExtractInstrumentation();
+        ExtractInstrumentation();
     }
 
     public static void ExtractInstance(String project) {
         String initDirPath = "../IntroClassJava/dataset/" + project;
         File dir = new File(initDirPath);
-        if (dir.exists() && dir.isDirectory()) {
-            dir.delete();
+        File outDir = new File("./ProcessedInstances/" + project);
+
+        if (outDir.exists() && outDir.isDirectory()) {
+            try {
+                FileUtils.deleteDirectory(outDir);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            boolean remade = outDir.mkdir();
         } else {
-            new File("./ProcessedInstances/" + project).mkdir();
+            boolean made = outDir.mkdir();
         }
+
         int sampleIdx = 0;
         System.out.println(project + ": ");
         for (File repo : Objects.requireNonNull(dir.listFiles())) {             // dataset/*
@@ -52,11 +64,13 @@ public class Extractor {
                         File targetFile = new File(targetPath);
                         String outPath;
                         if (!f.getName().contains("_")) {
+                            System.out.println("SEEN REF!");
                             outPath = "./ProcessedInstances/" + project + "/" + "REF_" + f.getName();
                         } else {
                             outPath = "./ProcessedInstances/" + project + "/" + f.getName();
                         }
                         File outFile = new File(outPath);
+                        System.out.println("Writing to file: " + outFile.getName());
                         try {
                             BufferedWriter bf = writeFile(targetFile, outFile, project); // from target to out
                             bf.close();
@@ -67,14 +81,104 @@ public class Extractor {
                     }
                 }
             }
-            sampleIdx++;
+            // check sample number and if ref was read
             System.out.println(sampleIdx);
             if (sampleIdx >= sampleLimit) {
                 return;
             }
+            sampleIdx++;
         }
     }
 
+
+    /*
+    Function to extract only the reference projects from introclassJava repos
+     */
+    public static void ExtractInstanceRef(String project) {
+        String targetPath = "../IntroClassJava/dataset/"
+                + project
+                + "/ref/reference/src/main/java/introclassJava/"
+                + project.substring(0, 1).toUpperCase() + project.substring(1)
+                + ".java";
+
+        File targetFile = new File(targetPath);
+        String outPath = "./ProcessedInstances/" + project + "/" + "REF_" + project + ".java";
+        File outFile = new File(outPath);
+        System.out.println("Writing to file: " + outFile.getName());
+        try {
+            BufferedWriter bf = writeFileRef(targetFile, outFile, project); // from target to out
+            bf.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    private static BufferedWriter writeFileRef(File targetFile, File outFile, String project) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(targetFile));
+        StringBuilder fileContent = new StringBuilder();
+        String line;
+        br.readLine();
+        while ((line = br.readLine()) != null) {
+            if (line.contains("public class")) {
+                fileContent.append("public class ClassDef {");
+            } else if (line.contains(project + "_" + " = new") || line.contains("mainClass = new")) {
+                fileContent.append("\tClassDef mainClass = new ClassDef();");
+            } else if (line.contains("throws Exception") && !line.contains("public static void main")) {
+                fileContent.append(line.replace("throws Exception", ""));
+                fileContent.append("\n");
+                fileContent.append("\tString name = " + "\"").append(outFile.getName().replace(".java", "")).append("\";");
+            } else if (line.contains("throws Exception") && line.contains("public static void main")) {
+                fileContent.append(line.replace("throws Exception", ""));
+            } else if (line.contains("class IntObj {")
+                    || line.contains("class FloatObj {")
+                    || line.contains("class LongObj {")
+                    || line.contains("class DoubleObj {")
+                    || line.contains("class CharObj {")) {
+                String hold = line;
+                String inserted;
+                if (hold.contains("Char")) {
+                    inserted = """
+                                \n\t@Override
+                                public String toString() {
+                                    if (this.value == 0) {
+                                        return "null";
+                                    } else {
+                                        return Character.toString(this.value);
+                                    }
+                                }
+                            """;
+                } else {
+                    inserted = """
+                                \n\t@Override
+                                public String toString() {
+                                    return String.valueOf(this.value);
+                                }
+                            """;
+                }
+                inserted += "}";
+//                System.out.println("\n\n\n" + inserted + "\n\n\n");
+                hold = hold.substring(0, hold.length()-1);
+                hold += inserted;
+                fileContent.append(hold);
+            } else {
+                fileContent.append(line);
+            }
+            fileContent.append("\n");
+        }
+
+        BufferedWriter bf = new BufferedWriter(new FileWriter(outFile));
+        String paketik = "package aprs_introclass;\n";
+        bf.write(paketik);
+        bf.write(fileContent.toString());
+        return bf;
+    }
+
+    /*
+    Helper function to process the class definition files
+    (A brute force solution)
+     */
     private static BufferedWriter writeFile(File targetFile, File outFile, String project) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(targetFile));
         String fileContent = "";
@@ -97,19 +201,31 @@ public class Extractor {
                     || line.contains("class DoubleObj {")
                     || line.contains("class CharObj {")) {
                 String hold = line;
-                String stringMethod = "";
                 fileContent += line + "\n";
                 fileContent += br.readLine() + "\n";
                 fileContent += br.readLine() + "\n";
                 fileContent += br.readLine() + "\n";
                 fileContent += br.readLine() + "\n";
                 fileContent += br.readLine() + "\n";
-                stringMethod = hold.contains("Char") ? "Character.toString" : "String.valueOf";
-                fileContent += """
-                            @Override
-                            public String toString() {
-                        """;
-                fileContent += "\treturn " + stringMethod + "(this.value);\n\t}";
+                if (hold.contains("Char")) {
+                    fileContent += """
+                                @Override
+                                public String toString() {
+                                    if (this.value == 0) {
+                                        return "null";
+                                    } else {
+                                        return Character.toString(this.value);
+                                    }
+                                }
+                            """;
+                } else {
+                    fileContent += """
+                                @Override
+                                public String toString() {
+                                    return String.valueOf(this.value);
+                                }
+                            """;
+                }
             }
             else {
                 fileContent += line;
@@ -118,8 +234,8 @@ public class Extractor {
         }
 
         BufferedWriter bf = new BufferedWriter(new FileWriter(outFile));
-        String pk = "package aprs_introclass;\n";
-        bf.write(pk);
+        String paketik = "package aprs_introclass;\n";
+        bf.write(paketik);
         bf.write(fileContent);
         return bf;
     }
@@ -206,7 +322,7 @@ public class Extractor {
                     bf.write("public class MainInstance {");
                 } else if (line.contains("@Test")) {
                     bf.write("\tpublic static void main(String[] args) {\n");
-                } else if (line.contains(projectName)) {
+                } else if (line.contains(projectName+"_")) {
                     bf.write("\tClassDef mainClass = new ClassDef();\n");
                 } else if (line.contains("exec")) {
                     bf.write("\tmainClass.exec();\n");
@@ -252,10 +368,9 @@ public class Extractor {
         for (File project : Objects.requireNonNull(targetDir.listFiles())) {
             if (project.isDirectory()) {
                 for (File version : Objects.requireNonNull(project.listFiles())) {
+                    String classDefName = version.getName().substring(0, version.getName().indexOf("."));
                     String instrumPath = "../DiSL_Practice/src-profiler/aprs_introclass/";
-                    String instrumName = "Instrumentation_BB_"
-                            + version.getName().substring(0, version.getName().indexOf("."))
-                            + ".java";
+                    String instrumName = "Instrumentation_BB_" + classDefName+ ".java";
                     File instrumFile = new File(instrumPath + instrumName);
                     if (instrumFile.exists()) {
                         instrumFile.delete();
@@ -275,6 +390,51 @@ public class Extractor {
                                 } else if (line.contains("binarySearch") || line.contains("BinarySearch")) {
                                     bw.write(line.replace("BinarySearch", "Exec"));
                                     bw.write("\n");
+                                } else if (line.contains("HashMap<String, String> LocalVars = new HashMap")
+                                        && !line.contains("//")) {
+                                    bw.write(line+"\n");
+                                    String classDefPath = project + "/" + classDefName + ".java";
+                                    File matchingDefFile = new File(classDefPath);
+                                    BufferedReader bf_inner = new BufferedReader(new FileReader(matchingDefFile));
+                                    String line_inner, defs = "";
+                                    boolean flag = false;
+
+                                    bw.write("\t\tLocalVars.put(\"0\",dc.getLocalVariableValue" +
+                                            "(0, Object.class).toString());\n");
+                                    bw.write("\t\tLocalVars.put(\"1\",dc.getLocalVariableValue(" +
+                                            "1, String.class).toString());\n");
+
+                                    // move inner reader to definitions (by introclass template)
+                                    while ((line_inner = bf_inner.readLine()) != null) {
+                                        if (line_inner.contains("output +=")) {
+                                            break;
+                                        } if (flag) {
+                                            defs += line_inner + " "; // append definitions
+                                        } if (line_inner.contains("String name = ")) { // reach this mark
+                                            flag = true;
+                                        }
+                                    }
+                                    int idx = 2;
+                                    int charIdx = 0;
+                                    String[] defsArr = defs.split(" ");
+                                    for (int i = 0; i < defsArr.length; i++) {
+                                        if (defsArr[i].equals("new")) {
+                                            if (defsArr[i+1].equals("CharObj")) {
+                                                bw.write("\t\tint s"+charIdx+";\n");
+                                                bw.write("\t\tchar c"+charIdx+" = " +
+                                                        "dc.getLocalVariableValue("+idx+", Character.class);\n");
+                                                bw.write("\t\tif (c"+charIdx+" == 0) {\n");
+                                                bw.write("\t\t\ts"+charIdx+" = 0;\n\t\t} ");
+                                                bw.write("else {\n\t\t\ts"+charIdx+" = c"+charIdx+";\n\t\t}\n");
+                                                bw.write("\t\tLocalVars.put(\""+idx+"\",\"char_\"+String.valueOf(s"+charIdx+"));\n");
+                                                charIdx++;
+                                            } else {
+                                                bw.write("\t\tLocalVars.put(\""+idx+"\",dc.getLocalVariableValue(" +
+                                                        idx+", Object.class).toString());\n");
+                                            }
+                                            idx++;
+                                        }
+                                    }
                                 } else {
                                     bw.write(line);
                                     bw.write("\n");

@@ -4,7 +4,7 @@ public class MainInstance {
 	public static void main(String[] args) {
 	ClassDef mainClass = new ClassDef();
         String expected =
-	ClassDef mainClass = new ClassDef();
+            "Please enter 3 numbers separated by spaces > 9 is the median";
         mainClass.scanner = new java.util.Scanner ("9 9 9");
 	mainClass.exec();
     }
