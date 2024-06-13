@@ -1,16 +1,20 @@
 package CollectionsProcessing;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 
+import com.opencsv.CSVWriter;
 import SimilarityMeasures.LCS;
 import SimilarityMeasures.LevenshteinDistance;
 import SimilarityMeasures.SmithWaterman;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import static CollectionsProcessing.JunitParser.parseTestResults;
+import static CollectionsProcessing.JunitParser.testResults;
 
 /*
 * Class to process the program traces produced by disl*/
@@ -22,24 +26,14 @@ public class JsonHandler {
     public static int curCode = 0;
     public static HashMap<String, String> outJson = new HashMap<String, String>();
     public static HashMap<String, String> encodingMap = new HashMap<String, String>();
+//    public static HashMap<String, HashMap<String, String>> junitTestResults = new HashMap<String, HashMap<String, String>>();
+
 
     public static void main(String[] args) throws IOException {
+        File resFile = new File("./distance_results.csv");
         for (String project : projects) {
             HandleJsonTraces(project);
         }
-//        System.out.println(outJson);
-//        System.out.println(encodingMap);
-
-        File outFile = new File("./outTest.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
-
-        for (Map.Entry<String, String> entry : outJson.entrySet()) {
-            bw.write(entry.getKey());
-            bw.write("\n");
-            bw.write(entry.getValue());
-            bw.write("\n\n\n");
-        }
-        bw.close();
 
         // print the results
         HashMap<String, HashMap<String, Integer>> scores = new HashMap<String, HashMap<String, Integer>>(); // project_version : test_num : score (LD, LCS, SW)
@@ -48,9 +42,6 @@ public class JsonHandler {
         SortedSet<String> keys = new TreeSet<>(outJson.keySet());
         while (testIdx <= nTests) {
             for (String entry : keys) {
-//            for (Map.Entry<String, String> entry : outJson.entrySet()) {
-//                System.out.println(entry);
-//                System.out.println(outJson.get(entry));
                 if (entry.contains("test_" + testIdx)) {
                     int LD_score_BB, LCS_score_BB;
                     double SW_score_BB;
@@ -82,31 +73,67 @@ public class JsonHandler {
             testIdx++;
         }
 
-        for (String version : scores.keySet()) {
-            HashMap<String, Integer> score = scores.get(version);
-            int curTest = 0;
-            int avgLD = 0, avgLCS = 0, avgSW = 0;
-            for (String testName : score.keySet()) {
-                if (testName.contains("LD")) {
-                    avgLD += score.get(testName);
-                } else if (testName.contains("LCS")) {
-                    avgLCS += score.get(testName);
-                } else if (testName.contains("SW")) {
-                    avgSW += score.get(testName);
-                }
-                curTest++;
-            }
-            avgLD = avgLD/(nTests+1);
-            avgLCS = avgLCS/(nTests+1);
-            avgSW = avgSW/(nTests+1);
-            System.out.println(version + " <--------------> " + "ref:");
-            System.out.println("Average Levenshtein Distance: " + avgLD);
-            System.out.println("Average Longest Common Subsequence: " + avgLCS);
-            System.out.println("Average Smith-Waterman Score: " + avgSW);
-            System.out.println("==================================================");
+        SortedSet<String> scores_sorted = new TreeSet<>(scores.keySet());
 
+        try {
+            FileWriter writer = new FileWriter(resFile);
+            CSVWriter csvWriter = new CSVWriter(writer);
+            String[] header = {"Project", "Version", "LD Score", "LCS Score", "SW Score",
+                    "Black Box Pass %", "White Box Pass %"};
+
+            csvWriter.writeNext(header);
+            parseTestResults(); // Junit test results (all)
+
+
+            for (String fullFileName : scores_sorted) {
+                HashMap<String, Integer> score = scores.get(fullFileName);
+                int avgLD = 0, avgLCS = 0, avgSW = 0;
+                for (String testName : score.keySet()) {
+                    if (testName.contains("LD")) {
+                        avgLD += score.get(testName);
+                    } else if (testName.contains("LCS")) {
+                        avgLCS += score.get(testName);
+                    } else if (testName.contains("SW")) {
+                        avgSW += score.get(testName);
+                    }
+                }
+                avgLD = avgLD/(nTests+1);
+                avgLCS = avgLCS/(nTests+1);
+                avgSW = avgSW/(nTests+1);
+
+                String projectName, version, junit_res_W, junit_res_B;
+                String name_w = fullFileName + "_W";
+                String name_b = fullFileName + "_B";
+
+
+                if (!fullFileName.contains("REF")) {
+                    projectName = fullFileName.substring(0, fullFileName.indexOf("_"));
+                    version = fullFileName.substring(fullFileName.indexOf("_")+1);
+                    junit_res_W = testResults.get(projectName).get(name_w);
+                    junit_res_B = testResults.get(projectName).get(name_b);
+                } else {
+                    projectName = fullFileName.substring(fullFileName.indexOf("_")+1);
+                    version = "REF";
+                    junit_res_W = "100";
+                    junit_res_B = "100";
+                }
+
+                System.out.println(junit_res_W);
+                System.out.println(junit_res_B);
+                System.out.println(fullFileName + " <----------------------> " + "REF_" + projectName);
+                System.out.println("Average Levenshtein Distance: " + avgLD);
+                System.out.println("Average Longest Common Subsequence: " + avgLCS);
+                System.out.println("Average Smith-Waterman Score: " + avgSW);
+                System.out.println("==================================================");
+
+                String[] nextLine = {projectName, version, String.valueOf(avgLD), String.valueOf(avgLCS),
+                        String.valueOf(avgSW), junit_res_W+"%", junit_res_B+"%",};
+                csvWriter.writeNext(nextLine);
+            }
+            csvWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-//        System.out.println(scores);
     }
 
     /*
@@ -118,18 +145,7 @@ public class JsonHandler {
         ArrayList<String> fileNames = new ArrayList<>();
 
         getFileNames(pathToTests, fileNames);                            // get names of all project versions
-
-        int i = 0;
-        for (Iterator<String> it = fileNames.iterator(); it.hasNext(); i++) {
-            String testName = it.next();
-
-//            if (testName.contains("REF")) {
-//                System.out.println(testName);
-//                for (int j = 0; j <= nTests; j++) {
-//                    fileNames.set(i, testName + "_test_");
-//                }
-//            }
-
+        for (String testName : fileNames) {
             String path = pathToJson + testName;
             processTests(path, testName);
         }
@@ -140,9 +156,7 @@ public class JsonHandler {
         String mapKeyRefBB;
         while (curTestIdx <= nTests) {
             String curTestBB = path.replace(".java", "") + "_test_" + curTestIdx + "_BB.json";
-//            System.out.println(curTestBB);
             mapKeyRefBB = name.replace(".java", "") + "_test_" + curTestIdx + "_BB";
-//            System.out.println(mapKeyRefBB);
 
             ObjectMapper mapperRefBB = new ObjectMapper();
             JsonNode jsonNodeRefBB = mapperRefBB.readTree(new File(curTestBB));
@@ -160,7 +174,6 @@ public class JsonHandler {
             for (File file : listOfFiles) {
                 if (file.isFile()) {
                     fileNames.add(file.getName());
-//                    System.out.println("File " + file.getName());
                 }
             }
         }
@@ -191,9 +204,7 @@ public class JsonHandler {
             if (encodingMap.containsKey(root.asText())) {
                 outJson.put(mapKey, outJson.get(mapKey) + encodingMap.get(root.asText()));
             } else {
-//                encodingMap.put(encodingMap.get(root.asText()), String.valueOf(curCode));
                 int len = val.length();
-
                 // TODO make it work with any number of chars
                 if (len == 1) {
                     val = val + "___ ";
