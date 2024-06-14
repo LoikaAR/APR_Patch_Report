@@ -17,7 +17,7 @@ import static CollectionsProcessing.JunitParser.parseTestResults;
 import static CollectionsProcessing.JunitParser.testResults;
 
 /*
-* Class to process the program traces produced by disl*/
+* Class to process the program traces produced by disl */
 
 public class JsonHandler {
     public static String[] projects = {"digits", "checksum", "grade", "median", "smallest", "syllables"};
@@ -127,7 +127,7 @@ public class JsonHandler {
                 System.out.println("==================================================");
 
                 String[] nextLine = {projectName, version, String.valueOf(avgLD), String.valueOf(avgLCS),
-                        String.valueOf(avgSW), junit_res_W+"%", junit_res_B+"%",};
+                        String.valueOf(avgSW), junit_res_W, junit_res_B,};
                 csvWriter.writeNext(nextLine);
             }
             csvWriter.close();
