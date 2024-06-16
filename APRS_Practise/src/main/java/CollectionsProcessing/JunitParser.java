@@ -38,21 +38,9 @@ public class JunitParser {
                     String version = line.substring(delimFirst+1, delimThird);
                     String results = br.readLine();
 
-//                    if (project.contains("checksum")) {
-//                        System.out.println(project);
-//                        System.out.println(version);
-//                        System.out.println(testType);
-//                        System.out.println(results);
-//                        System.out.println();
-//                    }
-
                     int res = getRes(results);
                     HashMap<String, String> testResult = new HashMap<String, String>();
                     testResult.put(version + "_" + testType, String.valueOf(res));
-
-//                    if ((version + "_" + testType).equals("checksum_08c7ea4a_006_W")) {
-//                        System.out.println(version + "_" + testType);
-//                    }
 
                     if (!testResults.containsKey(project)) {
                         testResults.put(project, testResult);

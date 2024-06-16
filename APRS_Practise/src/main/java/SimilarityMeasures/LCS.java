@@ -1,13 +1,10 @@
 package SimilarityMeasures;
 
-import CollectionsProcessing.JsonHandler;
-
-import java.io.IOException;
 import java.util.Arrays;
 
-public class LCS {
+// source of original code: https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
 
-    // using a dp table
+public class LCS {
     public static int longestCommonSubsequence(String text1, String text2) {
         int n = text1.length();
         int m = text2.length();
@@ -27,19 +24,5 @@ public class LCS {
         return cur[m];
     }
 
-    public static void main(String[] args) {
-//        try {
-//            JsonHandler.HandleJsonTraces(false);
-//            JsonHandler.HandleJsonTraces(true);
-//        } catch (IOException e) {
-//            System.out.println("Error writing to file");
-//            System.out.println(e.getMessage());
-//        }
-//
-//        int score = longestCommonSubsequence(JsonHandler.outJson.get("output_v1"),
-//                JsonHandler.outJson.get("output_v2"));
-////        int score = levenshteinTwoMatrixRows("hello", "helo");
-//
-//        System.out.println("Longest common subsequence length: " + score);
-    }
+    public static void main(String[] args) {}
 }

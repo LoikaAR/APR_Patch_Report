@@ -26,7 +26,6 @@ public class JsonHandler {
     public static int curCode = 0;
     public static HashMap<String, String> outJson = new HashMap<String, String>();
     public static HashMap<String, String> encodingMap = new HashMap<String, String>();
-//    public static HashMap<String, HashMap<String, String>> junitTestResults = new HashMap<String, HashMap<String, String>>();
 
 
     public static void main(String[] args) throws IOException {
@@ -34,6 +33,9 @@ public class JsonHandler {
         for (String project : projects) {
             HandleJsonTraces(project);
         }
+
+        System.out.println(encodingMap);
+        System.out.println(outJson);
 
         // print the results
         HashMap<String, HashMap<String, Integer>> scores = new HashMap<String, HashMap<String, Integer>>(); // project_version : test_num : score (LD, LCS, SW)
@@ -46,7 +48,7 @@ public class JsonHandler {
                     int LD_score_BB, LCS_score_BB;
                     double SW_score_BB;
 
-                    if (entry.contains("BB")) {
+                    if (entry.contains("BB")) { // not required, unless need distinction with non basic block analysis
                         int iend = entry.indexOf("_test");
                         String versionName = entry.substring(0, iend);
                         scores.computeIfAbsent(versionName, k -> new HashMap<>());
@@ -124,7 +126,7 @@ public class JsonHandler {
                 System.out.println("Average Levenshtein Distance: " + avgLD);
                 System.out.println("Average Longest Common Subsequence: " + avgLCS);
                 System.out.println("Average Smith-Waterman Score: " + avgSW);
-                System.out.println("==================================================");
+                System.out.println("============================================================");
 
                 String[] nextLine = {projectName, version, String.valueOf(avgLD), String.valueOf(avgLCS),
                         String.valueOf(avgSW), junit_res_W, junit_res_B,};
@@ -166,7 +168,8 @@ public class JsonHandler {
             curTestIdx++;
         }
     }
-
+   /*
+    * Helper function to extract file names */
     public static void getFileNames(String path, ArrayList<String> fileNames) {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();

@@ -1,6 +1,6 @@
 package SimilarityMeasures;
 
-
+// source of the original code: https://www.cs.utexas.edu/~mobios/cs329e/rosetta/src/SmithWaterman.java
 /**
  * Smith-Waterman local alignment algorithm.
  */
@@ -11,10 +11,6 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * Design Note: this class implements AminoAcids interface: a simple fix customized to amino acids, since that is all we deal with in this class
- * Supporting both DNA and Aminoacids, will require a more general design.
- */
 
 public class SmithWaterman {
 
@@ -292,24 +288,6 @@ public class SmithWaterman {
     }
 
     public static void main(String[] args) {
-//        try {
-//            JsonHandler.HandleJsonTraces(false);
-//            JsonHandler.HandleJsonTraces(true);
-//        } catch (IOException e) {
-//            System.out.println("Error writing to file");
-//            System.out.println(e.getMessage());
-//        }
-//
-//        SmithWaterman sw = new SmithWaterman(JsonHandler.outJson.get("output_v1"),
-//                JsonHandler.outJson.get("output_v2"));
-////        SmithWaterman sw = new SmithWaterman("hello", "hello");
-//
-//        System.out.println("\nThe alignments with the maximum score are: \n");
-//        sw.printAlignments();
-//
-//        System.out.println("\nThe maximum alignment score is: " +
-//                sw.getAlignmentScore());
-
         // number of max matching chars given the penalties for spaces++
     }
 }
